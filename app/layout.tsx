@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import NavBar from "@/components/navbar/navbar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,9 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased
+        grid grid-cols-12`}
       >
-        {children}
+        <main className="col-span-10">{children}</main>
+        <NavBar />
       </body>
     </html>
   );
