@@ -1,11 +1,11 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import GlowText from "@/ui/glow-text";
 import { ComponentPropsWithoutRef, useState } from "react";
 import { CaretDownMd } from "react-coolicons";
-import { INavLink } from "@/components/navbar/navbar";
+import { INavLink } from "@/types/navbar";
 
 interface NavLinkProps
   extends Omit<INavLink, "href" | "name">,
@@ -48,16 +48,10 @@ export default function NavLink({
           className={`flex ${isChild ? `justify-center ${isActive ? "" : "text-accent"}` : "justify-between"} items-center`}
         >
           <div className="flex items-center gap-2">
-            {isActive ? (
-              <GlowText>{iconActive || icon}</GlowText>
-            ) : (
-              <span>{icon}</span>
-            )}
-            {isActive ? (
-              <GlowText>{children}</GlowText>
-            ) : (
-              <span>{children}</span>
-            )}
+            <GlowText isGlowing={isActive}>
+              {isActive ? iconActive || icon : icon}
+            </GlowText>
+            <GlowText isGlowing={isActive}>{children}</GlowText>
           </div>
 
           {!isChild &&
@@ -74,7 +68,12 @@ export default function NavLink({
       {isExpanded &&
         !!childLinks &&
         childLinks.map((link) => (
-          <NavLink key={link.name} href={`${href}${link.href}`} isChild={true}>
+          <NavLink
+            key={link.name}
+            href={`${href}${link.href}`}
+            isChild={true}
+            {...rest}
+          >
             {link.name}
           </NavLink>
         ))}
