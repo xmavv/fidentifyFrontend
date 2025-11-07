@@ -1,10 +1,12 @@
 import GlowText from "@/ui/glow-text";
 import Button from "@/ui/button";
 import Card from "@/ui/card";
+import Input from "@/ui/input";
 
 export default function Page() {
   return (
     <div>
+      <Input label="email" type="email" />
       <GlowText className="text-primary">siemka</GlowText>
       <Button className="text-warn">xd</Button>
       <div className={"max-w-230 grid grid-cols-11 grid-rows-3 gap-1"}>
