@@ -6,7 +6,7 @@ interface InputProps extends ComponentPropsWithoutRef<"input"> {
 
 export default function Input({ label, ...rest }: InputProps) {
   return (
-    <div className="relative">
+    <div className="relative inline-block">
       <input
         {...rest}
         id={label}
