@@ -1,13 +1,13 @@
 import NavLink from "@/ui/nav-link";
 import Button from "@/ui/button";
 import Image from "next/image";
-import Header from "@/components/navbar/header";
+import HeaderNav from "@/components/navbar/header-nav";
 import { navLinks } from "@/types/navbar";
 
 export default function NavBar() {
   return (
-    <nav className="col-span-2 p-4 overflow-auto overflow-x-hidden border-l border-foreground">
-      <Header />
+    <nav className="p-4 overflow-auto overflow-x-hidden border-l border-foreground">
+      <HeaderNav />
 
       <ul className="space-y-2 mt-10">
         {navLinks.map((link) => (

@@ -34,9 +34,9 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased
-        grid grid-cols-12 h-screen scroll-smooth`}
+        grid grid-cols-[1fr_17vw] h-screen scroll-smooth`}
       >
-        <main className="col-span-10">{children}</main>
+        <main className="w-[60vw] mx-auto pt-20">{children}</main>
         <NavBar />
       </body>
     </html>

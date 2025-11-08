@@ -2,7 +2,7 @@ import Logo from "@/ui/logo";
 import Image from "next/image";
 import { TimerClose } from "react-coolicons";
 
-export default function Header() {
+export default function HeaderNav() {
   return (
     <div>
       <Logo />
