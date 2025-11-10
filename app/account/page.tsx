@@ -19,16 +19,24 @@ export default function Page() {
       <div className="space-y-15">
         <section>
           <p className="text-xl text-white">Statistics</p>
-          {Array.from({ length: 4 }, (_, i) => (
-            <Statistics label="created" value={5} />
-          ))}
+          <ul>
+            {Array.from({ length: 4 }, (_, i) => (
+              <li key={i}>
+                <Statistics label="created" value={5} />
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section>
           <p className="text-xl text-white">Information</p>
-          {Array.from({ length: 5 }, (_, i) => (
-            <Statistics label="new match" value="#42718" />
-          ))}
+          <ul>
+            {Array.from({ length: 5 }, (_, i) => (
+              <li key={i}>
+                <Statistics label="new match" value="#42718" />
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </div>
