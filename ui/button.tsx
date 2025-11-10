@@ -10,7 +10,7 @@ export default function Button({ children, ...rest }: ButtonProps) {
     <button
       {...rest}
       className={`min-w-60 p-3 bg-linear-to-r cursor-pointer 
-      from-gradient-L to-gradient-R shadow-base inset-shadow-base ${rest.className}`}
+      from-gradient-bright to-gradient-dark shadow-base inset-shadow-base ${rest.className}`}
     >
       <GlowText>{children}</GlowText>
     </button>

@@ -10,7 +10,7 @@ export default function Log({ log }: LogProps) {
 
   return (
     <div
-      className="p-3 bg-linear-to-r from-gradient-L to-gradient-R shadow-base inset-shadow-base
+      className="p-3 bg-linear-to-r from-gradient-bright to-gradient-dark shadow-base inset-shadow-base
     flex justify-between items-center"
     >
       <div className="flex items-center gap-2">

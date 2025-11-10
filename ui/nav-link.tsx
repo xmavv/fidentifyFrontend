@@ -43,7 +43,7 @@ export default function NavLink({
         ${
           isActive ? `${!!childLinks ? "" : "text-primary"}` : ""
         } hover:text-primary transition-color duration-300 
-        from-gradient-L to-gradient-R shadow-base inset-shadow-base ${
+        from-gradient-bright to-gradient-dark shadow-base inset-shadow-base ${
           rest.className
         } ${isChild ? "text-accent" : ""}`}
         onNavigate={handleNavigate}
