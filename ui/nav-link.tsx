@@ -34,15 +34,19 @@ export default function NavLink({
     }
   }
 
+  // to jest mega tutaj, bo to ma zawsze taki kolor jak element - default bialy
+  // a jezeli zmieniam color to zawsze ustawiam wlasnie color prop czyli to wtedy tez sie zmienia
   return (
     <>
       <Link
         {...rest}
         href={href}
         className={`inline-block relative min-w-60 p-3 bg-linear-to-r cursor-pointer 
+        shadow-none focus-visible:shadow-[0_0_3px_currentColor] focus-visible:scale-[1.05]
+        outline-none
         ${
           isActive ? `${!!childLinks ? "" : "text-primary"}` : ""
-        } hover:text-primary transition-color duration-300 
+        } hover:text-primary transition-all duration-300 
         from-gradient-bright to-gradient-dark shadow-base inset-shadow-base ${
           rest.className
         } ${isChild ? "text-accent" : ""}`}
