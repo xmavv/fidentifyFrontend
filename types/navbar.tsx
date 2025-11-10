@@ -9,9 +9,7 @@ import {
   Settings,
   User02,
 } from "react-coolicons";
-import Image from "next/image";
-import recognize from "@/public/icon_recognize.png";
-import recognizeActive from "@/public/icon_recognize_active.png";
+import IconRecognize from "@/ui/icons/icon-recognize";
 
 export interface INavLink {
   name: string;
@@ -29,24 +27,7 @@ export const navLinks: INavLink[] = [
     childLinks: null,
   },
   {
-    icon: (
-      <Image
-        src={recognize}
-        alt=""
-        width={22}
-        height={22}
-        className="translate-x-[2px]"
-      />
-    ),
-    iconActive: (
-      <Image
-        src={recognizeActive}
-        alt=""
-        width={22}
-        height={22}
-        className="translate-x-[2px]"
-      />
-    ),
+    icon: <IconRecognize />,
     name: "recognize",
     href: "/recognize",
     childLinks: null,

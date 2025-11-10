@@ -40,22 +40,24 @@ export default function NavLink({
         {...rest}
         href={href}
         className={`inline-block relative min-w-60 p-3 bg-linear-to-r cursor-pointer 
-      ${isActive ? `${!!childLinks ? "" : "text-primary"}` : ""} from-gradient-L to-gradient-R shadow-base 
-      inset-shadow-base ${rest.className}`}
+        ${
+          isActive ? `${!!childLinks ? "" : "text-primary"}` : ""
+        } hover:text-primary transition-color duration-300 
+        from-gradient-L to-gradient-R shadow-base inset-shadow-base ${
+          rest.className
+        } ${isChild ? "text-accent" : ""}`}
         onNavigate={handleNavigate}
       >
         <div
-          className={`flex ${isChild ? `justify-center ${isActive ? "" : "text-accent"}` : "justify-between"} items-center`}
+          className={`flex
+          ${isChild ? "justify-center" : "justify-between"} items-center`}
         >
           <div className="flex items-center gap-2">
-            <GlowText isGlowing={isActive}>
-              {isActive ? iconActive || icon : icon}
-            </GlowText>
+            <GlowText isGlowing={isActive}>{icon}</GlowText>
             <GlowText isGlowing={isActive}>{children}</GlowText>
           </div>
 
-          {!isChild &&
-            !!childLinks &&
+          {!!childLinks &&
             (isActive ? (
               <GlowText>
                 <CaretDownMd />
@@ -73,6 +75,7 @@ export default function NavLink({
             href={`${href}${link.href}`}
             isChild={true}
             {...rest}
+            className={`${rest.className} mt-[2px]`}
           >
             {link.name}
           </NavLink>
