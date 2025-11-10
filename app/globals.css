@@ -6,7 +6,7 @@
   --primary: #00EEFF;
   --primary-2: #00AAFF;
   --primary-3: #0059FF;
-  --info: #FFC400;
+  --instruction: #FFC400;
   --warn: #FF0077;
   --success: #00FF44;
   --accent: #6C6C6C;
@@ -39,7 +39,7 @@
   --color-primary: var(--primary);
   --color-primary-2: var(--primary-2);
   --color-primary-3: var(--primary-3);
-  --color-info: var(--info);
+  --color-instruction: var(--instruction);
   --color-warn: var(--warn);
   --color-success: var(--success);
   --color-accent: var(--accent);

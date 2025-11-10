@@ -28,7 +28,13 @@ export default function CardThreshold() {
             <RemoveMinus className="inline mx-1" />
           </span>
           <Input className="w-15" label="%" />
-          <GlowText className="!text-info ml-4">57%</GlowText>
+          {/*weird behaviour with text-info*/}
+          {/*this is caused because "info" is before "inherit" alphabetical*/}
+          {/*and then when tailwind compute classes my created class "text-info"*/}
+          {/*is before "text-inherit", thats why "text-inherit" is used instead*/}
+          {/*and of course this is happening because we are setting two classes*/}
+          {/*on GlowText component instance, then one declared lower is used*/}
+          <GlowText className="text-instruction ml-4">57%</GlowText>
         </div>
 
         <div>
