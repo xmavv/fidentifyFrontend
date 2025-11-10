@@ -1,12 +1,16 @@
 import GlowText from "@/ui/glow-text";
 import Button, { ButtonCTA } from "@/ui/button";
 import Input from "@/ui/input";
-import Log from "@/components/log/log";
+import Log from "@/components/logs/log";
 import Card from "@/ui/card";
+import Setting from "@/components/settings/setting";
 
 export default function Page() {
   return (
     <div>
+      <Setting label="database creations" value="4" />
+      <Setting label="database creations" value="4" />
+      <Setting label="database creations" value="4" />
       <Log
         log={{
           label: "new-match",
