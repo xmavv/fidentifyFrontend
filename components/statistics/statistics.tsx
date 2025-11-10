@@ -3,9 +3,9 @@ interface SettingProps {
   value: string | number;
 }
 
-export default function Setting({ label, value }: SettingProps) {
+export default function Statistics({ label, value }: SettingProps) {
   return (
-    <div className="flex justify-between border-t border-white py-3">
+    <div className="flex justify-between border-t border-white py-4">
       <span className="text-foreground">{label}</span>
       <span className="text-foreground">{value}</span>
     </div>
