@@ -1,4 +1,4 @@
-import Input from "@/ui/input";
+import Select from "@/ui/select";
 
 export default function CardLanguage() {
   return (
@@ -8,7 +8,8 @@ export default function CardLanguage() {
         <p className="inline text-xs text-[#5A5A5A]">Change app’s language.</p>
       </div>
 
-      <Input className="w-25" label="language" />
+      <Select />
+      {/*<Input className="w-25" label="language" />*/}
     </div>
   );
 }
