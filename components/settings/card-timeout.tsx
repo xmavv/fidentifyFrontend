@@ -10,7 +10,7 @@ export default function CardTimeout() {
         </p>
       </div>
 
-      <Input className="w-20" label="time" />
+      <Input className="w-25" label="Time (min)" type="number" maxLength={2} />
     </div>
   );
 }

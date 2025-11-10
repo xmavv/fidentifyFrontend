@@ -1,4 +1,10 @@
-import Select from "@/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shadcn/select";
 
 export default function CardLanguage() {
   return (
@@ -8,7 +14,15 @@ export default function CardLanguage() {
         <p className="inline text-xs text-[#5A5A5A]">Change app’s language.</p>
       </div>
 
-      <Select />
+      <Select>
+        <SelectTrigger>
+          <SelectValue placeholder="Language" />
+        </SelectTrigger>
+        <SelectContent align="end">
+          <SelectItem value="english">English</SelectItem>
+          <SelectItem value="polish">Polish</SelectItem>
+        </SelectContent>
+      </Select>
       {/*<Input className="w-25" label="language" />*/}
     </div>
   );

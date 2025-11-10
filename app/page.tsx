@@ -4,7 +4,6 @@ import Input from "@/ui/input";
 import Log from "@/components/logs/log";
 import Card from "@/ui/card";
 import Statistics from "@/components/statistics/statistics";
-import Select from "@/ui/select";
 
 export default function Page() {
   return (
@@ -13,7 +12,6 @@ export default function Page() {
         <option>xzd</option>
         <option>xzd</option>
       </select>
-      <Select />
       <Statistics label="database creations" value="4" />
       <Statistics label="database creations" value="4" />
       <Statistics label="database creations" value="4" />

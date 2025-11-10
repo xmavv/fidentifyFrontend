@@ -22,6 +22,12 @@
     body {
         letter-spacing: -0.07em;
     }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 }
 
 @layer utilities {

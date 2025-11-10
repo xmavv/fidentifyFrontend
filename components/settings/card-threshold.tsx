@@ -14,20 +14,27 @@ export default function CardThreshold() {
 
       <div className="space-y-4">
         <div>
-          <Input className="w-15" label="%" defaultValue={0} />
+          <Input
+            className="w-10"
+            label="%"
+            defaultValue={0}
+            type="number"
+            maxLength={1}
+            disabled={true}
+          />
           <span className="text-accent">
             <RemoveMinus className="inline mx-1" />
           </span>
-          <Input className="w-15" label="%" />
+          <Input className="w-10" label="%" type="number" min={1} max={99} />
           <GlowText className="text-warn ml-4">34%</GlowText>
         </div>
 
         <div>
-          <Input className="w-15" label="%" />
+          <Input className="w-10" label="%" type="number" min={1} max={99} />
           <span className="text-accent">
             <RemoveMinus className="inline mx-1" />
           </span>
-          <Input className="w-15" label="%" />
+          <Input className="w-10" label="%" type="number" min={1} max={99} />
           {/*weird behaviour with text-info*/}
           {/*this is caused because "info" is before "inherit" alphabetical*/}
           {/*and then when tailwind compute classes my created class "text-info"*/}
@@ -38,11 +45,18 @@ export default function CardThreshold() {
         </div>
 
         <div>
-          <Input className="w-15" label="%" />
+          <Input className="w-10" label="%" type="number" min={1} max={99} />
           <span className="text-accent">
             <RemoveMinus className="inline mx-1" />
           </span>
-          <Input className="w-15" label="%" defaultValue={100} />
+          <Input
+            className="w-11"
+            label="%"
+            defaultValue={100}
+            type="number"
+            maxLength={3}
+            disabled={true}
+          />
           <GlowText className="text-success ml-4">97%</GlowText>
         </div>
       </div>
