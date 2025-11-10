@@ -62,7 +62,7 @@ body {
   font-family: "Inter Semi Bold", Inter, Arial, Helvetica, sans-serif;
 
   ::-webkit-scrollbar {
-    width: .3rem;
+    width: .4rem;
   }
 
   ::-webkit-scrollbar-track {

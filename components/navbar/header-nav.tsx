@@ -1,6 +1,7 @@
 import Logo from "@/ui/logo";
 import Image from "next/image";
 import { TimerClose } from "react-coolicons";
+import LogoSmall from "@/public/logo_small.png";
 
 export default function HeaderNav() {
   return (
@@ -9,7 +10,7 @@ export default function HeaderNav() {
       <div className="flex justify-between font-extralight leading-4 mt-1">
         <p>
           <Image
-            src="/logo_small.png"
+            src={LogoSmall}
             alt=""
             width={15}
             height={15}

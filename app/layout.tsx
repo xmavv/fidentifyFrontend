@@ -36,7 +36,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased
         grid grid-cols-[1fr_17vw] h-screen scroll-smooth`}
       >
-        <main className="w-[60vw] mx-auto pt-20">{children}</main>
+        {/*HEADER component could be rendered right there even with params coming from url*/}
+        {/*then layout would be a client component, BUT its rendering children*/}
+        {/*soooo, it can render server components and whole application won't be client rendered*/}
+        <main className="px-50 overflow-auto overflow-x-hidden">
+          {children}
+        </main>
         <NavBar />
       </body>
     </html>
