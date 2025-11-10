@@ -10,7 +10,7 @@ export default function Input({ label, ...rest }: InputProps) {
       <input
         {...rest}
         id={label}
-        className="peer p-3 border border-accent"
+        className={`peer p-3 border border-accent ${rest.className}`}
         placeholder=""
       />
       <label
