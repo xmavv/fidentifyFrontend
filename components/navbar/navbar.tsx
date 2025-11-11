@@ -8,7 +8,7 @@ export default function NavBar() {
   return (
     //aside only for semantic purposes
     <aside>
-      <nav className="p-4 overflow-auto overflow-x-hidden border-l border-foreground">
+      <nav className="h-full p-4 overflow-auto overflow-x-hidden border-l border-foreground">
         <HeaderNav />
 
         <ul className="space-y-2 mt-10">
