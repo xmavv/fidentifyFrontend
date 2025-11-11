@@ -22,7 +22,7 @@ export default function CardBento({
   return (
     <Link
       href={href}
-      className="transition-all outline-none focus-visible:scale-[1.08] cursor-pointer focus-visible:brightness-130 hover:brightness-130"
+      className="transition-all historyoutline-none focus-visible:scale-[1.08] cursor-pointer focus-visible:brightness-130"
     >
       <Card
         {...rest}

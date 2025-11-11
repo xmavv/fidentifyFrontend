@@ -21,7 +21,7 @@ export function ButtonSmall({ children, ...rest }: ButtonProps) {
   return (
     <button
       {...rest}
-      className={`p-1 bg-linear-to-r cursor-pointer 
+      className={`px-1 py-0.5 bg-linear-to-r cursor-pointer 
       from-gradient-bright to-gradient-dark shadow-base inset-shadow-base ${rest.className}`}
     >
       <GlowText>{children}</GlowText>

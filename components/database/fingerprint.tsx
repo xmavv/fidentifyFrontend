@@ -13,7 +13,7 @@ export default function Fingerprint() {
           <h5>
             <GlowText>#000</GlowText>
           </h5>
-          <div>
+          <div className="space-y-1">
             <ButtonSmall className="block text-warn">
               <RemoveMinus className="inline w-5" />
             </ButtonSmall>
@@ -30,6 +30,7 @@ export default function Fingerprint() {
           alt="fingerprint"
           height={200}
           width={130}
+          className="rounded-2xl"
         />
       </div>
     </Card>
