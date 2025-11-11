@@ -9,7 +9,19 @@ export default function Button({ children, ...rest }: ButtonProps) {
   return (
     <button
       {...rest}
-      className={`min-w-60 p-3 bg-linear-to-r cursor-pointer 
+      className={`p-3 bg-linear-to-r cursor-pointer 
+      from-gradient-bright to-gradient-dark shadow-base inset-shadow-base ${rest.className}`}
+    >
+      <GlowText>{children}</GlowText>
+    </button>
+  );
+}
+
+export function ButtonSmall({ children, ...rest }: ButtonProps) {
+  return (
+    <button
+      {...rest}
+      className={`p-1 bg-linear-to-r cursor-pointer 
       from-gradient-bright to-gradient-dark shadow-base inset-shadow-base ${rest.className}`}
     >
       <GlowText>{children}</GlowText>
