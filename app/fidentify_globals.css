@@ -60,6 +60,14 @@
 
     --bg-analyze: url('/public/analyze.png');
 
+    --animate-pulse-blue: pulse-blue 20s ease-in-out infinite;
+    @keyframes pulse-blue {
+        0%, 100% {
+            opacity: 100%;
+        } 50% {
+            opacity: 0;
+        }
+    }
 }
 
 body {

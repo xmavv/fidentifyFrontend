@@ -23,25 +23,25 @@ export const navLinks: INavLink[] = [
   {
     icon: <House01 />,
     name: "dashboard",
-    href: "/dashboard",
+    href: "/application/dashboard",
     childLinks: null,
   },
   {
     icon: <IconRecognize />,
     name: "recognize",
-    href: "/recognize",
+    href: "/application/recognize",
     childLinks: null,
   },
   {
     icon: <NoteSearch />,
     name: "analyze",
-    href: "/analyze",
+    href: "/application/analyze",
     childLinks: [{ name: "FLANN", href: "/flann" }],
   },
   {
     icon: <Ruler />,
     name: "utils",
-    href: "/utils",
+    href: "/application/utils",
     childLinks: [
       { name: "ORIENTATION", href: "/ORIENTATION" },
       { name: "GABOR", href: "/GABOR" },
@@ -53,31 +53,31 @@ export const navLinks: INavLink[] = [
   {
     icon: <Alarm />,
     name: "history",
-    href: "/history",
+    href: "/application/history",
     childLinks: null,
   },
   {
     icon: <Data />,
     name: "database",
-    href: "/database",
+    href: "/application/database",
     childLinks: null,
   },
   {
     icon: <User02 />,
     name: "account",
-    href: "/account",
+    href: "/application/account",
     childLinks: null,
   },
   {
     icon: <Info />,
     name: "logs",
-    href: "/logs",
+    href: "/application/logs",
     childLinks: null,
   },
   {
     icon: <Settings />,
     name: "settings",
-    href: "/settings",
+    href: "/application/settings",
     childLinks: null,
   },
 ] as const;

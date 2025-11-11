@@ -10,15 +10,15 @@ export default function Input({ label, ...rest }: InputProps) {
       <input
         {...rest}
         id={label}
-        className={`peer px-2 py-1 border border-accent focus-visible:rounded-sm outline-none
-        focus-visible:outline-2 focus-visible:outline-solid outline-accent duration-50 ${rest.className}`}
+        className={`peer px-2 py-3 border border-accent outline-none
+        focus-visible:shadow-[0_0_3px_currentColor] ${rest.className}`}
         placeholder=""
       />
       <label
         htmlFor={label}
-        className="text-accent absolute left-3 top-1 translate-y-[1px] translate-x-[1px] transition-all
+        className="text-accent absolute left-3 top-3 px-0.5 translate-y-[1px] translate-x-[1px] transition-all
         peer-[&:not(:placeholder-shown)]:-translate-y-3 peer-[&:not(:placeholder-shown)]:text-xs pointer-events-none
-        peer-[&:not(:placeholder-shown)]:-translate-x-2 peer-[&:not(:placeholder-shown)]:text-foreground"
+        peer-[&:not(:placeholder-shown)]:-translate-x-2  peer-[&:not(:placeholder-shown)]:text-foreground text-nowrap"
       >
         {label}
       </label>
