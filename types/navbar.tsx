@@ -36,7 +36,7 @@ export const navLinks: INavLink[] = [
     icon: <NoteSearch />,
     name: "analyze",
     href: "/analyze",
-    childLinks: [{ name: "FLANN", href: "/FLANN" }],
+    childLinks: [{ name: "FLANN", href: "/flann" }],
   },
   {
     icon: <Ruler />,
