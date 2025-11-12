@@ -5,6 +5,7 @@ import Image from "next/image";
 import OutputFingerprintImage from "@/public/fingerprint_output.png";
 import { ArrowRightLg } from "react-coolicons";
 import Button from "@/ui/button";
+import Dropzone from "@/ui/dropzone";
 
 export default function Page() {
   return (
@@ -14,12 +15,14 @@ export default function Page() {
       </Header>
 
       <div className="flex justify-evenly">
-        <InputOutputCard>INPUT SHADCN COMPONENT</InputOutputCard>
+        <InputOutputCard className="box-border p-1">
+          <Dropzone />
+        </InputOutputCard>
 
         <ArrowRightLg className="text-accent self-center -translate-y-8" />
 
         <div>
-          <InputOutputCard>
+          <InputOutputCard className="py-8 px-4">
             <Image
               src={OutputFingerprintImage}
               alt=""

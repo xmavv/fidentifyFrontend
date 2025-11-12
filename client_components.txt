@@ -1,1 +1,2 @@
-nav-link.tsx
+nav-link
+dropzone - nie musi byc bo tam tylko context jest
