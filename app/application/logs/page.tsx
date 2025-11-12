@@ -16,6 +16,7 @@ export default function Page() {
       <Header>
         <Info /> logs
       </Header>
+
       <ul className="space-y-4">
         {Array.from({ length: 50 }, (_, i) => (
           <li key={i}>
