@@ -42,7 +42,7 @@ export default function NavLink({
         {...rest}
         href={href}
         className={`inline-block relative min-w-60 p-3 bg-linear-to-r cursor-pointer 
-        shadow-none focus-visible:shadow-[0_0_3px_currentColor] focus-visible:scale-[1.05]
+        shadow-none focus-visible:shadow-[0_0_5px_currentColor] focus-visible:scale-[1.05]
         outline-none
         ${
           isActive ? `${!!childLinks ? "" : "text-primary"}` : ""

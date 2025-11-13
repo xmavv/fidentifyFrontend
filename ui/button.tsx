@@ -9,7 +9,9 @@ export default function Button({ children, ...rest }: ButtonProps) {
   return (
     <button
       {...rest}
-      className={`p-3 bg-linear-to-r cursor-pointer 
+      className={`p-3 bg-linear-to-r cursor-pointer outline-none transition-all duration-300 
+      focus-visible:shadow-[0_2px_3px_currentColor] hover:shadow-[0_2px_3px_currentColor]
+      focus-visible:brightness-110 hover:brightness-110
       from-gradient-bright to-gradient-dark shadow-base inset-shadow-base ${rest.className}`}
     >
       <GlowText>{children}</GlowText>

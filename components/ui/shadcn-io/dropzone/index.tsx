@@ -15,6 +15,7 @@ type DropzoneContextType = {
   maxSize?: DropzoneOptions["maxSize"];
   minSize?: DropzoneOptions["minSize"];
   maxFiles?: DropzoneOptions["maxFiles"];
+  isDragActive?: boolean;
 };
 
 const renderBytes = (bytes: number) => {
@@ -80,13 +81,12 @@ export const Dropzone = ({
   return (
     <DropzoneContext.Provider
       key={JSON.stringify(src)}
-      value={{ src, accept, maxSize, minSize, maxFiles }}
+      value={{ src, accept, maxSize, minSize, maxFiles, isDragActive }}
     >
       <Button
         className={cn(
           "relative h-auto w-full flex-col overflow-hidden p-8 bg-gradient-dark",
-          isDragActive &&
-            "outline-none ring-1 ring-gray-950 dark:ring-gray-300",
+          isDragActive && "bg-[#222222]",
           className,
         )}
         disabled={disabled}
@@ -158,7 +158,8 @@ export const DropzoneEmptyState = ({
   children,
   className,
 }: DropzoneEmptyStateProps) => {
-  const { src, accept, maxSize, minSize, maxFiles } = useDropzoneContext();
+  const { isDragActive, src, accept, maxSize, minSize, maxFiles } =
+    useDropzoneContext();
 
   if (src) {
     return null;
@@ -188,7 +189,7 @@ export const DropzoneEmptyState = ({
       <GlowText>
         <FileUpload
           style={{ width: 25, height: 25 }}
-          className="inline w-10 h-10"
+          className={`inline w-10 h-10 transition-all ${isDragActive ? "-translate-y-2 scale-110" : ""}`}
           height={15}
           width={15}
         />
