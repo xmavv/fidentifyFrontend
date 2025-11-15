@@ -1,3 +1,7 @@
+"use client";
+// THIS NEEDS TO BE A CLIENT COMPONENT BECAUSE IT IS DOING SOMETHING ON PAGE
+// ONCLICK, ONVALUECHANGE, ETC
+
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";

@@ -5,47 +5,76 @@ import Image from "next/image";
 import OutputFingerprintImage from "@/public/fingerprint_output.png";
 import Button from "@/ui/button";
 import { ReactNode } from "react";
+import PipelineSelect from "@/components/pipeline/pipeline-select";
 
 interface PipelineProps {
-  inputClass?: string;
-  outputClass?: string;
-  selectable?: boolean;
+  wide?: boolean;
+  method?: { name: string; items: string[] };
+  value?: string;
   description?: string;
   cta: ReactNode;
 }
 
 export default function Pipeline({
-  inputClass = "",
-  outputClass = "",
-  selectable = false,
+  wide = false,
+  method = { name: "", items: [] },
+  value = "",
   description = "",
   cta,
 }: PipelineProps) {
   return (
     <>
       <div className="flex justify-evenly">
-        <InputOutputCard className={`box-border p-1 ${inputClass}`}>
-          <Dropzone />
-        </InputOutputCard>
-
+        <div className="flex gap-2">
+          <InputOutputCard
+            className={`box-border p-1 ${wide ? "!w-60 !h-80" : ""}`}
+          >
+            <Dropzone />
+          </InputOutputCard>
+          {wide && (
+            <InputOutputCard
+              className={`box-border p-1 ${wide ? "!w-60 !h-80" : ""}`}
+            >
+              <Dropzone />
+            </InputOutputCard>
+          )}
+        </div>
         <ArrowRightLg className="text-accent self-center -translate-y-8" />
 
         <div>
           <InputOutputCard
-            className={`py-8 px-4 pointer-events-none ${outputClass}`}
+            className={`py-8 px-4 pointer-events-none overflow-hidden ${wide ? "!w-120 !h-80" : ""}`}
           >
-            <Image
-              src={OutputFingerprintImage}
-              alt=""
-              className="inline-block text-center opacity-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            />
+            <div className="flex gap-2 justify-center items-center h-full w-4/5 mx-auto">
+              <Image
+                src={OutputFingerprintImage}
+                alt=""
+                className="h-3/5 w-4/5 inline-block opacity-20"
+              />
+              {wide && (
+                <Image
+                  src={OutputFingerprintImage}
+                  alt=""
+                  className="h-3/5 w-4/5 inline-block opacity-20"
+                />
+              )}
+            </div>
             <p className="text-[#4E4E4E] absolute bottom-4 left-1/2 -translate-x-1/2 text-nowrap">
               Matched image will popup there
             </p>
           </InputOutputCard>
 
-          <div className="mt-4 flex justify-between items-center gap-8">
-            <Button className="text-primary w-full">{cta}</Button>
+          <div className="mt-4 flex justify-between gap-8">
+            <div className="w-full space-y-2">
+              <Button className="text-primary w-full">{cta}</Button>
+              {method.items.length !== 0 && (
+                <PipelineSelect
+                  name={method.name}
+                  items={method.items}
+                  value={value}
+                />
+              )}
+            </div>
             <p>00:32</p>
           </div>
         </div>

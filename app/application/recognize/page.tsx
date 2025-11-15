@@ -6,7 +6,7 @@ const recognizeDescription =
 
 export default function Page() {
   return (
-    <div className="h-full relative">
+    <div className="relative h-full">
       <Header>
         <IconRecognize /> recognize
       </Header>
