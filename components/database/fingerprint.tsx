@@ -26,7 +26,7 @@ export default function Fingerprint() {
             {/*</ButtonSmall>*/}
           </div>
         </div>
-        <ImageZoom isZoomed={true}>
+        <ImageZoom>
           <Image
             src={MockFingerprint}
             alt="fingerprint"
