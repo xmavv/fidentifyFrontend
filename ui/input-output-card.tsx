@@ -10,7 +10,7 @@ export default function InputOutputCard({
   return (
     <div
       {...rest}
-      className={`relative w-90 h-120 bg-gradient-dark ${rest.className}`}
+      className={`relative w-90 h-120 bg-gradient-dark p-0.5 ${rest.className}`}
     >
       <svg
         className="absolute inset-0 w-full h-full"

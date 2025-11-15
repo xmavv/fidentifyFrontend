@@ -6,10 +6,16 @@ import OutputFingerprintImage from "@/public/fingerprint_output.png";
 import Button from "@/ui/button";
 import { ReactNode } from "react";
 import PipelineSelect from "@/components/pipeline/pipeline-select";
+import {
+  Comparison,
+  ComparisonHandle,
+  ComparisonItem,
+} from "@/components/ui/shadcn-io/comparison";
 
 interface PipelineProps {
   wide?: boolean;
   method?: { name: string; items: string[] };
+  isComparable: boolean;
   value?: string;
   description?: string;
   cta: ReactNode;
@@ -18,6 +24,7 @@ interface PipelineProps {
 export default function Pipeline({
   wide = false,
   method = { name: "", items: [] },
+  isComparable,
   value = "",
   description = "",
   cta,
@@ -42,22 +49,47 @@ export default function Pipeline({
         <ArrowRightLg className="text-accent self-center -translate-y-8" />
 
         <div>
+          {/*  py-8 px-4  pointer-events-none*/}
           <InputOutputCard
-            className={`py-8 px-4 pointer-events-none overflow-hidden ${wide ? "!w-120 !h-80" : ""}`}
+            className={`overflow-hidden ${wide ? "!w-120 !h-80" : ""}`}
           >
-            <div className="flex gap-2 justify-center items-center h-full w-4/5 mx-auto">
-              <Image
-                src={OutputFingerprintImage}
-                alt=""
-                className="h-3/5 w-4/5 inline-block opacity-20"
-              />
-              {wide && (
-                <Image
-                  src={OutputFingerprintImage}
-                  alt=""
-                  className="h-3/5 w-4/5 inline-block opacity-20"
-                />
-              )}
+            <div className="flex gap-2 justify-center items-center h-full mx-auto">
+              <Comparison className="w-full h-full">
+                <ComparisonItem className="bg-red-500" position="left">
+                  <Image
+                    alt="Placeholder 1"
+                    className="opacity-50"
+                    height={1080}
+                    src="https://placehold.co/1920x1080?random=1"
+                    unoptimized
+                    width={1920}
+                  />
+                </ComparisonItem>
+                <ComparisonItem className="bg-blue-500" position="right">
+                  <Image
+                    alt="Placeholder 2"
+                    className="opacity-50"
+                    height={1440}
+                    src="https://placehold.co/2560x1440?random=2"
+                    unoptimized
+                    width={2560}
+                  />
+                </ComparisonItem>
+                <ComparisonHandle />
+              </Comparison>
+
+              {/*<Image*/}
+              {/*  src={OutputFingerprintImage}*/}
+              {/*  alt=""*/}
+              {/*  className="h-3/5 w-4/5 inline-block opacity-20"*/}
+              {/*/>*/}
+              {/*{wide && (*/}
+              {/*  <Image*/}
+              {/*    src={OutputFingerprintImage}*/}
+              {/*    alt=""*/}
+              {/*    className="h-3/5 w-4/5 inline-block opacity-20"*/}
+              {/*  />*/}
+              {/*)}*/}
             </div>
             <p className="text-[#4E4E4E] absolute bottom-4 left-1/2 -translate-x-1/2 text-nowrap">
               Matched image will popup there
