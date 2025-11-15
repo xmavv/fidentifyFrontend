@@ -1,7 +1,6 @@
 import Card from "@/ui/card";
 import Image from "next/image";
 import MockHistoryImage from "@/public/mock_flann.png";
-import MockFingerprint from "@/public/mock_fingerprint.png";
 import GlowText from "@/ui/glow-text";
 import { ButtonSmall } from "@/ui/button";
 import { Download, Expand, Info, RemoveMinus } from "react-coolicons";
@@ -24,7 +23,7 @@ export default function History() {
               <CarouselItem key={index} className="h-full">
                 <ImageZoom className="text-center">
                   <Image
-                    src={MockFingerprint}
+                    src={MockHistoryImage}
                     alt="history entry"
                     className="rounded-2xl inline-block"
                   />

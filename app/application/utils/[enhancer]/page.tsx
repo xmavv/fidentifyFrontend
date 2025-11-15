@@ -2,11 +2,7 @@ import Header from "@/ui/header";
 import { Ruler } from "react-coolicons";
 import Pipeline from "@/components/pipeline/pipeline";
 import { utilsDescriptions } from "@/constants/utilities";
-
-const feature = {
-  name: "utils",
-  items: ["orientation", "gabor", "skeletonize", "minutiae", "singularity"],
-};
+import UtilsPipeline from "@/components/utils/utils-pipeline";
 
 export default async function Page({
   params,
@@ -28,16 +24,7 @@ export default async function Page({
         <Ruler /> utilities
       </Header>
 
-      <Pipeline
-        method={feature}
-        value={enhancer}
-        description={utilsDescriptions[enhancer]}
-        cta={
-          <span>
-            <Ruler className="inline" /> enhance
-          </span>
-        }
-      />
+      <UtilsPipeline enhancer={enhancer} />
     </div>
   );
 }

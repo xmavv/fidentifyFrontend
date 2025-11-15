@@ -2,6 +2,7 @@ import { NoteSearch } from "react-coolicons";
 import Header from "@/ui/header";
 import Pipeline from "@/components/pipeline/pipeline";
 import { analyzeDescriptions } from "@/constants/analyze";
+import AnalyzePipeline from "@/components/analyze/analyze-pipeline";
 
 const feature = { name: "analyze", items: ["flann"] };
 
@@ -25,17 +26,7 @@ export default async function Page({
         <NoteSearch /> analyze
       </Header>
 
-      <Pipeline
-        method={feature}
-        value={method}
-        wide
-        description={analyzeDescriptions[method]}
-        cta={
-          <span>
-            <NoteSearch className="inline" /> analyze
-          </span>
-        }
-      />
+      <AnalyzePipeline method={method} />
     </div>
   );
 }

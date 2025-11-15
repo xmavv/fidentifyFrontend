@@ -1,21 +1,27 @@
+"use client";
+
 import InputOutputCard from "@/ui/input-output-card";
-import Dropzone from "@/ui/dropzone";
 import { ArrowRightLg } from "react-coolicons";
 import Image from "next/image";
 import OutputFingerprintImage from "@/public/fingerprint_output.png";
 import Button from "@/ui/button";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import PipelineSelect from "@/components/pipeline/pipeline-select";
 import {
   Comparison,
   ComparisonHandle,
   ComparisonItem,
 } from "@/components/ui/shadcn-io/comparison";
+import {
+  Dropzone as DropzoneShadcn,
+  DropzoneContent,
+  DropzoneEmptyState,
+} from "@/components/ui/shadcn-io/dropzone";
 
 interface PipelineProps {
   wide?: boolean;
   method?: { name: string; items: string[] };
-  isComparable: boolean;
+  isComparable?: boolean;
   value?: string;
   description?: string;
   cta: ReactNode;
@@ -24,11 +30,17 @@ interface PipelineProps {
 export default function Pipeline({
   wide = false,
   method = { name: "", items: [] },
-  isComparable,
+  isComparable = false,
   value = "",
   description = "",
   cta,
 }: PipelineProps) {
+  const [files, setFiles] = useState<File[] | undefined>();
+
+  const handleDrop = (inputFiles: File[]) => {
+    console.log(inputFiles);
+  };
+
   return (
     <>
       <div className="flex justify-evenly">
@@ -36,13 +48,33 @@ export default function Pipeline({
           <InputOutputCard
             className={`box-border p-1 ${wide ? "!w-60 !h-80" : ""}`}
           >
-            <Dropzone />
+            <DropzoneShadcn
+              accept={{ image: ["jpg", "jpeg", "png", "tiff", "tif", "bmp"] }}
+              maxFiles={1}
+              onDrop={handleDrop}
+              onError={console.error}
+              src={files}
+              className="h-full rounded-none border-none"
+            >
+              <DropzoneEmptyState />
+              <DropzoneContent />
+            </DropzoneShadcn>
           </InputOutputCard>
           {wide && (
             <InputOutputCard
               className={`box-border p-1 ${wide ? "!w-60 !h-80" : ""}`}
             >
-              <Dropzone />
+              <DropzoneShadcn
+                accept={{ image: ["jpg", "jpeg", "png", "tiff", "tif", "bmp"] }}
+                maxFiles={1}
+                onDrop={handleDrop}
+                onError={console.error}
+                src={files}
+                className="h-full rounded-none border-none"
+              >
+                <DropzoneEmptyState />
+                <DropzoneContent />
+              </DropzoneShadcn>
             </InputOutputCard>
           )}
         </div>
