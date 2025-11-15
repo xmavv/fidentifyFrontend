@@ -4,6 +4,7 @@ import MockFingerprint from "@/public/mock_fingerprint.png";
 import { ButtonSmall } from "@/ui/button";
 import { Expand, Info, RemoveMinus } from "react-coolicons";
 import GlowText from "@/ui/glow-text";
+import { ImageZoom } from "@/components/ui/shadcn-io/image-zoom";
 
 export default function Fingerprint() {
   return (
@@ -20,18 +21,20 @@ export default function Fingerprint() {
             <ButtonSmall className="block">
               <Info className="inline w-5" />
             </ButtonSmall>
-            <ButtonSmall className="block">
-              <Expand className="inline w-5" />
-            </ButtonSmall>
+            {/*<ButtonSmall className="block">*/}
+            {/*  <Expand className="inline w-5" />*/}
+            {/*</ButtonSmall>*/}
           </div>
         </div>
-        <Image
-          src={MockFingerprint}
-          alt="fingerprint"
-          height={200}
-          width={130}
-          className="rounded-2xl"
-        />
+        <ImageZoom isZoomed={true}>
+          <Image
+            src={MockFingerprint}
+            alt="fingerprint"
+            height={700}
+            width={500}
+            className="rounded-2xl w-30 h-auto"
+          />
+        </ImageZoom>
       </div>
     </Card>
   );
