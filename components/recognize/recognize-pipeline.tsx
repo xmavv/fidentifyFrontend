@@ -94,18 +94,20 @@ export default function RecognizePipeline() {
         <div>
           <InputOutputCard className="relative overflow-hidden">
             {outputFiles.length > 0 ? (
-              <Carousel className="w-full max-w-xs h-full relative">
+              <Carousel className="w-full h-full relative">
                 <CarouselContent className="h-full w-full">
                   {outputFiles.map((file, i) => (
                     <CarouselItem key={file.name} className="h-full w-full">
                       <ImageZoom className="text-center w-full h-full">
-                        <div className="relative w-30 h-50">
+                        <div className="relative w-93 h-124">
                           <Image
                             src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${file.name}`}
                             alt={`output fingerprint image number ${i}`}
                             className="inline-block"
                             fill
-                            style={{ objectFit: "cover" }}
+                            style={{
+                              objectFit: "fill",
+                            }}
                             unoptimized
                           />
                         </div>
@@ -113,8 +115,14 @@ export default function RecognizePipeline() {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious className="absolute left-0" />
-                <CarouselNext className="absolute left-[90%]" />
+                <CarouselPrevious
+                  className="absolute left-0"
+                  style={{ backgroundColor: "black" }}
+                />
+                <CarouselNext
+                  className="absolute left-[90%]"
+                  style={{ backgroundColor: "black" }}
+                />
               </Carousel>
             ) : (
               <>
