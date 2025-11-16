@@ -12,7 +12,8 @@ export default function Button({ children, ...rest }: ButtonProps) {
       className={`p-3 bg-linear-to-r cursor-pointer outline-none transition-all duration-300 
       focus-visible:shadow-[0_2px_3px_currentColor] hover:shadow-[0_2px_3px_currentColor]
       focus-visible:brightness-110 hover:brightness-110
-      from-gradient-bright to-gradient-dark shadow-base inset-shadow-base ${rest.className}`}
+      from-gradient-bright to-gradient-dark shadow-base inset-shadow-base ${rest.className} 
+      disabled:text-gray-500 disabled:box-shadow-none disabled:cursor-not-allowed`}
     >
       <GlowText>{children}</GlowText>
     </button>
@@ -24,7 +25,8 @@ export function ButtonSmall({ children, ...rest }: ButtonProps) {
     <button
       {...rest}
       className={`px-1 py-0.5 bg-linear-to-r cursor-pointer 
-      from-gradient-bright to-gradient-dark shadow-base inset-shadow-base ${rest.className}`}
+      from-gradient-bright to-gradient-dark shadow-base inset-shadow-base ${rest.className}
+      disabled:text-gray-500 disabled:box-shadow-none disabled:cursor-not-allowed`}
     >
       <GlowText>{children}</GlowText>
     </button>

@@ -68,6 +68,20 @@
             opacity: 0;
         }
     }
+
+    --animate-left-right: left-right 5s ease-in-out infinite;
+    @keyframes left-right {
+        0%{
+            opacity: 0;
+            transform: translateX(-200%);
+        } 50% {
+            opacity: 100%;
+            transform: translateX(0);
+        } 100% {
+            opacity: 0;
+            transform: translateX(200%);
+        }
+    }
 }
 
 body {
@@ -92,3 +106,4 @@ body {
         background: rgba(255, 255, 255, 0.2);
     }
 }
+

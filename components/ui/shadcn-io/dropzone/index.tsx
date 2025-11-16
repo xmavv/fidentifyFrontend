@@ -201,11 +201,6 @@ export const DropzoneEmptyState = ({
       <p className="w-full truncate text-wrap text-xs text-accent">
         .jpg, .png, .tiff, .bmp
       </p>
-      {caption && (
-        <p className="text-wrap text-accent text-xs dark:text-gray-400">
-          {caption}.
-        </p>
-      )}
     </div>
   );
 };

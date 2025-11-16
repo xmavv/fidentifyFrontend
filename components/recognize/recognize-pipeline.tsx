@@ -10,8 +10,9 @@ import {
 import { ArrowRightLg } from "react-coolicons";
 import Image from "next/image";
 import Button from "@/ui/button";
+import FingerprintAnimation from "@/public/fingerprint_animation.gif";
 import OutputFingerprintImage from "@/public/fingerprint_output.png";
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { recognize } from "@/services/actions";
 import {
   Carousel,
@@ -21,52 +22,97 @@ import {
   CarouselPrevious,
 } from "@/shadcn/carousel";
 import { ImageZoom } from "@/components/ui/shadcn-io/image-zoom";
-import MockHistoryImage from "@/public/mock_flann.png";
+import { convertTiff } from "@/services/utils";
+import { displayDuration } from "@/lib/utils";
 const recognizeDescription =
   "Siamese AI model for fingerprint matching. The Siamese model is trained in a way that the dot product of two such vectors will return the similarity of the corresponding fingerprints. The trained model managed to match 8188 test fingerprints (never been seen while training) to 1000 unique test fingerprints with roughly 98% accuracy.";
 
 export default function RecognizePipeline() {
-  const [inputFiles, setInputFiles] = useState<File[] | undefined>();
+  const [isPending, startTransition] = useTransition();
+  const [inputFile, setInputFile] = useState<{ file: File; url: string }>();
   //TODO: MOVE THIS INTERFACE TO ITS OWN TYPE TO USE IT IN THE ACTION ALSO
   const [outputFiles, setOutputFiles] = useState<
     { match: number; name: string }[]
-  >([
-    {
-      match: 0.9770797491073608,
-      name: "static\\fingerprints\\19f13c39-4b1e-489d-9fa9-adf2b06c93c4_571__F_Left_ring_finger.BMP",
-    },
-    {
-      match: 0.9753514528274536,
-      name: "static\\fingerprints\\9499bf02-5800-4d0e-bb05-d908acb44e80_571__F_Left_thumb_finger.BMP",
-    },
-    {
-      match: 0.9746785759925842,
-      name: "static\\fingerprints\\db3cc7ec-9b50-4caa-92da-08c05328173b_406__M_Left_index_finger.BMP",
-    },
-  ]);
-  const filePath = inputFiles ? URL.createObjectURL(inputFiles[0]) : "";
+  >([]);
 
-  const handleDrop = (inputFiles: File[]) => {
-    setInputFiles(inputFiles);
-  };
+  //TEN TIMER TO NA PEWNO DO INNEGO COMPONENTU BO ON POWODUJE ZE CALY TEN COMPOENNT SIE RE-RENDERUJE CALY CZAS
+  //WIEC ALBO TO, ALBO ROBIMY TUTAJ MEMO
+
+  //FAJNY BYL BY TU REDUCER...
+  //DUZO STATEOW KTORE OD SIEBIE ZALEZA
+  const [duration, setDuration] = useState(0);
+
+  async function handleDrop(files: File[]) {
+    if (!files) return;
+
+    const file = files[0];
+    const name = file.name.toLowerCase() || "";
+    const isTiff = name.endsWith(".tif") || name.endsWith(".tiff");
+    let imageUrl: string;
+    if (isTiff) imageUrl = await convertTiff(file);
+    else imageUrl = URL.createObjectURL(file);
+
+    setInputFile({ file, url: imageUrl });
+  }
 
   async function handleSubmit() {
-    if (!inputFiles || inputFiles.length < 1) return;
-    const matchedFingerprints = await recognize(inputFiles[0]);
-    setOutputFiles(matchedFingerprints);
+    if (!inputFile || !inputFile.file) return;
+
+    const interval = setInterval(() => {
+      setDuration((duration) => duration + 1);
+    }, 1000);
+
+    // startTransition(async () => {
+    //   async function mock() {
+    //     return new Promise((res, rej) => {
+    //       setTimeout(() => {
+    //         res("");
+    //       }, 7000);
+    //     });
+    //   }
+    //
+    //   const matchedFingerprints = await mock();
+    //
+    //   setOutputFiles([
+    //     {
+    //       match: 0.9770797491073608,
+    //       name: "static\\fingerprints\\19f13c39-4b1e-489d-9fa9-adf2b06c93c4_571__F_Left_ring_finger.BMP",
+    //     },
+    //     {
+    //       match: 0.9753514528274536,
+    //       name: "static\\fingerprints\\9499bf02-5800-4d0e-bb05-d908acb44e80_571__F_Left_thumb_finger.BMP",
+    //     },
+    //     {
+    //       match: 0.9746785759925842,
+    //       name: "static\\fingerprints\\db3cc7ec-9b50-4caa-92da-08c05328173b_406__M_Left_index_finger.BMP",
+    //     },
+    //   ]);
+    // });
+
+    startTransition(async () => {
+      const matchedFingerprints = await recognize(inputFile?.file);
+      setOutputFiles(matchedFingerprints);
+      clearInterval(interval);
+    });
+  }
+
+  function resetInputFile() {
+    setInputFile(undefined);
+    setOutputFiles([]);
+    setDuration(0);
   }
 
   return (
     <>
       <div className="flex justify-evenly">
         <InputOutputCard className="box-border p-1">
-          {filePath ? (
+          {inputFile?.url ? (
             <div
               className="group relative w-full h-full animate-in fade-in duration-500"
-              onClick={() => setInputFiles(undefined)}
+              onClick={resetInputFile}
             >
               <Image
-                src={filePath}
+                src={inputFile.url}
                 alt="input fingerprint"
                 fill
                 style={{ objectFit: "cover" }}
@@ -77,7 +123,12 @@ export default function RecognizePipeline() {
             </div>
           ) : (
             <DropzoneShadcn
-              accept={{ image: ["jpg", "jpeg", "png", "tiff", "tif", "bmp"] }}
+              accept={{
+                "image/jpeg": [".jpg", ".jpeg"],
+                "image/png": [".png"],
+                "image/tiff": [".tiff", ".tif"],
+                "image/bmp": [".bmp"],
+              }}
               maxFiles={1}
               onDrop={handleDrop}
               onError={console.error}
@@ -89,12 +140,16 @@ export default function RecognizePipeline() {
           )}
         </InputOutputCard>
 
-        <ArrowRightLg className="text-accent self-center -translate-y-8" />
+        <ArrowRightLg
+          className={`text-accent self-center -translate-y-8 drop-shadow-none
+        ${outputFiles.length > 0 || isPending ? `drop-shadow-[-4px_0_5px_var(--primary)] text-primary ${!isPending ? "" : "animate-left-right"}` : ""}
+        transition-all duration-2000`}
+        />
 
         <div>
-          <InputOutputCard className="relative overflow-hidden">
+          <InputOutputCard className={`relative overflow-hidden`}>
             {outputFiles.length > 0 ? (
-              <Carousel className="w-full h-full relative">
+              <Carousel className="w-full h-full relative animate-in fade-in duration-500">
                 <CarouselContent className="h-full w-full">
                   {outputFiles.map((file, i) => (
                     <CarouselItem key={file.name} className="h-full w-full">
@@ -125,26 +180,41 @@ export default function RecognizePipeline() {
                 />
               </Carousel>
             ) : (
-              <>
-                <Image
-                  src={OutputFingerprintImage}
-                  alt=""
-                  className="absolute inline-block opacity-20 left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
-                />
-                <p className="text-[#4E4E4E] absolute bottom-4 left-1/2 -translate-x-1/2 text-nowrap">
-                  Matched image will popup there
-                </p>
-              </>
+              <div className="pointer-events-none grid place-items-center">
+                {isPending ? (
+                  <Image
+                    src={FingerprintAnimation}
+                    alt=""
+                    className="absolute top-1/5 left 1/2
+                    animate-in fade-in duration-700"
+                  />
+                ) : (
+                  <>
+                    <Image
+                      src={OutputFingerprintImage}
+                      alt=""
+                      className="absolute inline-block opacity-20 left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
+                    />
+                    <p className="text-[#4E4E4E] absolute bottom-4 left-1/2 -translate-x-1/2 text-nowrap">
+                      Matched image will popup there
+                    </p>
+                  </>
+                )}
+              </div>
             )}
           </InputOutputCard>
 
           <div className="mt-4 flex justify-between gap-8">
             <div className="w-full space-y-2">
-              <Button className="text-primary w-full" onClick={handleSubmit}>
+              <Button
+                className="text-primary w-full"
+                onClick={handleSubmit}
+                disabled={outputFiles.length > 0 || !inputFile}
+              >
                 <IconRecognize className="inline" /> recognize
               </Button>
             </div>
-            <p>00:32</p>
+            <p>{displayDuration(duration)}</p>
           </div>
         </div>
       </div>
