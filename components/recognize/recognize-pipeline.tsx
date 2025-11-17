@@ -24,6 +24,18 @@ import {
 import { ImageZoom } from "@/components/ui/shadcn-io/image-zoom";
 import { convertTiff } from "@/services/utils";
 import { displayDuration } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/shadcn/alert-dialog";
+import Card from "@/ui/card";
 const recognizeDescription =
   "Siamese AI model for fingerprint matching. The Siamese model is trained in a way that the dot product of two such vectors will return the similarity of the corresponding fingerprints. The trained model managed to match 8188 test fingerprints (never been seen while training) to 1000 unique test fingerprints with roughly 98% accuracy.";
 
@@ -34,6 +46,7 @@ export default function RecognizePipeline() {
   const [outputFiles, setOutputFiles] = useState<
     { match: number; name: string }[]
   >([]);
+  const [error, setError] = useState("123");
 
   //TEN TIMER TO NA PEWNO DO INNEGO COMPONENTU BO ON POWODUJE ZE CALY TEN COMPOENNT SIE RE-RENDERUJE CALY CZAS
   //WIEC ALBO TO, ALBO ROBIMY TUTAJ MEMO
@@ -57,10 +70,6 @@ export default function RecognizePipeline() {
 
   async function handleSubmit() {
     if (!inputFile || !inputFile.file) return;
-
-    const interval = setInterval(() => {
-      setDuration((duration) => duration + 1);
-    }, 1000);
 
     // startTransition(async () => {
     //   async function mock() {
@@ -89,8 +98,18 @@ export default function RecognizePipeline() {
     //   ]);
     // });
 
+    const interval = setInterval(() => {
+      setDuration((duration) => duration + 1);
+    }, 1000);
+
     startTransition(async () => {
       const matchedFingerprints = await recognize(inputFile?.file);
+      if (matchedFingerprints.detail) {
+        setError(matchedFingerprints.detail);
+        clearInterval(interval);
+        return;
+      }
+
       setOutputFiles(matchedFingerprints);
       clearInterval(interval);
     });
@@ -104,6 +123,36 @@ export default function RecognizePipeline() {
 
   return (
     <>
+      <AlertDialog open={!!error}>
+        <AlertDialogContent
+          style={{
+            border: "none",
+            padding: 0,
+          }}
+        >
+          <Card>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{error}</AlertDialogTitle>
+              <AlertDialogDescription className="text-accent">
+                <p>An error occurred and pipeline did not run properly.</p>
+                <p>
+                  Please read error information and try again with different
+                  image.{" "}
+                </p>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <Button
+                className="text-instruction py-2 px-8"
+                onClick={() => setError("")}
+              >
+                Continue
+              </Button>
+            </AlertDialogFooter>
+          </Card>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className="flex justify-evenly">
         <InputOutputCard className="box-border p-1">
           {inputFile?.url ? (
@@ -117,7 +166,7 @@ export default function RecognizePipeline() {
                 fill
                 style={{ objectFit: "cover" }}
               />
-              <div className="absolute transition-opacity opacity-0 group-hover:opacity-80 inset-0 bg-black grid place-items-center">
+              <div className="pointer-events-none absolute transition-opacity opacity-0 group-hover:opacity-80 inset-0 bg-black grid place-items-center">
                 <span>Click to reset input image</span>
               </div>
             </div>
@@ -165,6 +214,13 @@ export default function RecognizePipeline() {
                             }}
                             unoptimized
                           />
+                          <a
+                            href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${file.name}`}
+                            download
+                            className="absolute bottom-8 left-2 text-red-500"
+                          >
+                            POBIERZ
+                          </a>
                         </div>
                       </ImageZoom>
                     </CarouselItem>
@@ -209,7 +265,7 @@ export default function RecognizePipeline() {
               <Button
                 className="text-primary w-full"
                 onClick={handleSubmit}
-                disabled={outputFiles.length > 0 || !inputFile}
+                disabled={outputFiles.length > 0 || !inputFile || isPending}
               >
                 <IconRecognize className="inline" /> recognize
               </Button>
