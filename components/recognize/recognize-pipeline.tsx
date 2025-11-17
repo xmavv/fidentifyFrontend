@@ -53,6 +53,11 @@ export default function RecognizePipeline() {
 
   //FAJNY BYL BY TU REDUCER...
   //DUZO STATEOW KTORE OD SIEBIE ZALEZA
+  //POROBIC MNIEJSZE COMPONENTY BO TO JUZ ZA DUZO TUTAJ
+  //w sumie mozna uzyc tutaj tego patterny compound compoentn
+  //no bo np ten arrow to pasuje tylko jakby do tego pipelinu
+  //i mozna w ogole wtedy context zrobic na gorze i te componenty beda sie ladnie renderowac
+  //na bazie tego co jest w contexcie
   const [duration, setDuration] = useState(0);
 
   async function handleDrop(files: File[]) {
