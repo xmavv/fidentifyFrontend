@@ -12,6 +12,7 @@ import {
   CarouselPrevious,
 } from "@/shadcn/carousel";
 import { ImageZoom } from "@/components/ui/shadcn-io/image-zoom";
+import HistoryPercent from "@/components/history/history-percent";
 
 export default function History() {
   return (
@@ -43,7 +44,7 @@ export default function History() {
               <p className="font-medium text-primary-2 text-start">MINUTIAE</p>
             </div>
             <div>
-              <GlowText className="text-warn">34%</GlowText>
+              <HistoryPercent matchNumber={34} />
             </div>
           </div>
 

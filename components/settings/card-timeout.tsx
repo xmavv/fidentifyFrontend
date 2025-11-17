@@ -1,6 +1,12 @@
+"use client";
+
 import Input from "@/ui/input";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { TIMEOUT } from "@/constants/local-storage";
 
 export default function CardTimeout() {
+  const [timeout, setTimeout] = useLocalStorage(TIMEOUT, 30);
+
   return (
     <div className="flex justify-between">
       <div>
@@ -10,7 +16,14 @@ export default function CardTimeout() {
         </p>
       </div>
 
-      <Input className="w-25" label="Time (min)" type="number" maxLength={2} />
+      <Input
+        className="w-25"
+        label="Time (min)"
+        type="number"
+        maxLength={2}
+        value={timeout}
+        onBlur={(e) => setTimeout(e.target.value)}
+      />
     </div>
   );
 }

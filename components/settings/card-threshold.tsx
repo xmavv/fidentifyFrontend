@@ -1,8 +1,27 @@
+"use client";
+
 import Input from "@/ui/input";
 import GlowText from "@/ui/glow-text";
 import { RemoveMinus } from "react-coolicons";
-
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { initialValueThreshold, THRESHOLD } from "@/constants/local-storage";
 export default function CardThreshold() {
+  const [threshold, setThreshold] = useLocalStorage(
+    THRESHOLD,
+    initialValueThreshold,
+  );
+
+  function changeThreshold(
+    match: keyof typeof initialValueThreshold,
+    limit: "min" | "max",
+    value: string,
+  ) {
+    setThreshold((threshold: typeof initialValueThreshold) => ({
+      ...threshold,
+      [match]: { ...threshold[match], [limit]: value },
+    }));
+  }
+
   return (
     <div className="flex justify-between">
       <div>
@@ -18,23 +37,49 @@ export default function CardThreshold() {
             className="w-10"
             label="%"
             defaultValue={0}
+            value={threshold.low.min}
             type="number"
             maxLength={1}
             disabled={true}
+            onBlur={(e) => changeThreshold("low", "min", e.target.value)}
           />
           <span className="text-accent">
             <RemoveMinus className="inline mx-1" />
           </span>
-          <Input className="w-10" label="%" type="number" min={1} max={99} />
+          <Input
+            className="w-10"
+            label="%"
+            type="number"
+            min={1}
+            max={99}
+            value={threshold.low.max}
+            onBlur={(e) => changeThreshold("low", "max", e.target.value)}
+          />
           <GlowText className="text-warn ml-4">34%</GlowText>
         </div>
 
         <div>
-          <Input className="w-10" label="%" type="number" min={1} max={99} />
+          <Input
+            className="w-10"
+            label="%"
+            type="number"
+            min={1}
+            max={99}
+            value={threshold.medium.min}
+            onBlur={(e) => changeThreshold("medium", "min", e.target.value)}
+          />
           <span className="text-accent">
             <RemoveMinus className="inline mx-1" />
           </span>
-          <Input className="w-10" label="%" type="number" min={1} max={99} />
+          <Input
+            className="w-10"
+            label="%"
+            type="number"
+            min={1}
+            max={99}
+            value={threshold.medium.max}
+            onBlur={(e) => changeThreshold("medium", "max", e.target.value)}
+          />
           {/*weird behaviour with text-info*/}
           {/*this is caused because "info" is before "inherit" alphabetical*/}
           {/*and then when tailwind compute classes my created class "text-info"*/}
@@ -45,7 +90,15 @@ export default function CardThreshold() {
         </div>
 
         <div>
-          <Input className="w-10" label="%" type="number" min={1} max={99} />
+          <Input
+            className="w-10"
+            label="%"
+            type="number"
+            min={1}
+            max={99}
+            value={threshold.high.min}
+            onBlur={(e) => changeThreshold("high", "min", e.target.value)}
+          />
           <span className="text-accent">
             <RemoveMinus className="inline mx-1" />
           </span>
@@ -56,6 +109,8 @@ export default function CardThreshold() {
             type="number"
             maxLength={3}
             disabled={true}
+            value={threshold.high.max}
+            onBlur={(e) => changeThreshold("high", "max", e.target.value)}
           />
           <GlowText className="text-success ml-4">97%</GlowText>
         </div>
