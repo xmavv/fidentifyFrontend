@@ -46,7 +46,7 @@ export default function RecognizePipeline() {
   const [outputFiles, setOutputFiles] = useState<
     { match: number; name: string }[]
   >([]);
-  const [error, setError] = useState("123");
+  const [error, setError] = useState("HALO DZIALA TO");
 
   //TEN TIMER TO NA PEWNO DO INNEGO COMPONENTU BO ON POWODUJE ZE CALY TEN COMPOENNT SIE RE-RENDERUJE CALY CZAS
   //WIEC ALBO TO, ALBO ROBIMY TUTAJ MEMO
@@ -210,7 +210,7 @@ export default function RecognizePipeline() {
                       <ImageZoom className="text-center w-full h-full">
                         <div className="relative w-93 h-124">
                           <Image
-                            src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${file.name}`}
+                            src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/images/${file.name}`}
                             alt={`output fingerprint image number ${i}`}
                             className="inline-block"
                             fill
@@ -219,13 +219,13 @@ export default function RecognizePipeline() {
                             }}
                             unoptimized
                           />
-                          <a
-                            href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${file.name}`}
-                            download
-                            className="absolute bottom-8 left-2 text-red-500"
-                          >
-                            POBIERZ
-                          </a>
+                          {/*<a*/}
+                          {/*  href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${file.name}`}*/}
+                          {/*  download*/}
+                          {/*  className="absolute bottom-8 left-2 text-red-500"*/}
+                          {/*>*/}
+                          {/*  POBIERZ*/}
+                          {/*</a>*/}
                         </div>
                       </ImageZoom>
                     </CarouselItem>
