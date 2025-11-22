@@ -1,12 +1,7 @@
 "use client";
 
 import InputOutputCard from "@/ui/input-output-card";
-import {
-  Dropzone as DropzoneShadcn,
-  DropzoneContent,
-  DropzoneEmptyState,
-} from "@/components/ui/shadcn-io/dropzone";
-import { ArrowRightLg, Ruler } from "react-coolicons";
+import { Ruler } from "react-coolicons";
 import {
   Comparison,
   ComparisonHandle,
@@ -16,8 +11,16 @@ import Image from "next/image";
 import Button from "@/ui/button";
 import PipelineSelect from "@/components/pipeline/pipeline-select";
 import { utilsDescriptions } from "@/constants/utilities";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import OutputFingerprintImage from "@/public/fingerprint_output.png";
+import { convertTiff } from "@/services/utils";
+import { enhance } from "@/services/actions";
+import IndicatorArrow from "@/components/pipeline/indicator-arrow";
+import PipelineInput from "@/components/pipeline/pipeline-input";
+import FingerprintAnimation from "@/public/fingerprint_animation.gif";
+import { displayDuration } from "@/lib/utils";
+import Alert from "@/ui/alert";
+import { ImageZoom } from "@/components/ui/shadcn-io/image-zoom";
 
 const feature = {
   name: "utils",
@@ -29,72 +32,152 @@ export default function UtilsPipeline({
 }: {
   enhancer: keyof typeof utilsDescriptions;
 }) {
-  const [files, setFiles] = useState<File[] | undefined>();
+  //these states and functions are common, they can be moved to its own compoentn togethe with alert compoennt
+  //and then just pipeline per method, also all of the state can be in the reducer
+  //for even more convenience
 
-  const handleDrop = (inputFiles: File[]) => {
-    console.log(inputFiles);
-    setFiles(inputFiles);
-  };
+  //reusable component with children but animation and placehodler statys the same
+  const [isPending, startTransition] = useTransition();
+  const [inputFile, setInputFile] = useState<{ file: File; url: string }>();
+  const [outputFile, setOutputFile] = useState<{ path: string }>();
+  const [error, setError] = useState("");
+  const [duration, setDuration] = useState(0);
+
+  async function handleDrop(files: File[]) {
+    if (!files) return;
+
+    const file = files[0];
+    const name = file.name.toLowerCase() || "";
+    const isTiff = name.endsWith(".tif") || name.endsWith(".tiff");
+    let imageUrl: string;
+    if (isTiff) imageUrl = await convertTiff(file);
+    else imageUrl = URL.createObjectURL(file);
+
+    setInputFile({ file, url: imageUrl });
+  }
+
+  async function handleSubmit() {
+    if (!inputFile || !inputFile.file) return;
+
+    const interval = setInterval(() => {
+      setDuration((duration) => duration + 1);
+    }, 1000);
+
+    startTransition(async () => {
+      const enhancedFingerprint = await enhance(inputFile?.file, enhancer);
+      if (enhancedFingerprint.detail) {
+        setError(enhancedFingerprint.detail);
+        clearInterval(interval);
+        return;
+      }
+
+      setOutputFile(enhancedFingerprint);
+      clearInterval(interval);
+    });
+  }
+
+  console.log(outputFile);
+
+  function resetInputFile() {
+    setInputFile(undefined);
+    setOutputFile(undefined);
+    setDuration(0);
+  }
 
   return (
     <>
-      <div className="flex justify-evenly">
-        <InputOutputCard className="box-border p-1">
-          <DropzoneShadcn
-            accept={{ image: ["jpg", "jpeg", "png", "tiff", "tif", "bmp"] }}
-            maxFiles={1}
-            onDrop={handleDrop}
-            onError={console.error}
-            src={files}
-            className="h-full rounded-none border-none"
+      <Alert open={!!error}>
+        <Alert.Header>
+          <Alert.Title>{error}</Alert.Title>
+          <Alert.Description>
+            <span className="block">
+              An error occurred and pipeline did not run properly.
+            </span>
+            <span>
+              Please read error information and try again with different
+              image.{" "}
+            </span>
+          </Alert.Description>
+        </Alert.Header>
+        <Alert.Action>
+          <Button
+            className="text-instruction py-2 px-8"
+            onClick={() => setError("")}
           >
-            <DropzoneEmptyState />
-            <DropzoneContent />
-          </DropzoneShadcn>
-        </InputOutputCard>
-        <ArrowRightLg className="text-accent self-center -translate-y-8" />
+            Continue
+          </Button>
+        </Alert.Action>
+      </Alert>
+
+      <div className="flex justify-evenly">
+        <PipelineInput
+          inputFile={inputFile}
+          onReset={resetInputFile}
+          onDrop={handleDrop}
+        />
+
+        <IndicatorArrow isLoading={isPending} finished={!!outputFile} />
 
         <div>
-          <InputOutputCard className="relative overflow-hidden">
-            {files ? (
+          <InputOutputCard className={`relative overflow-hidden`}>
+            {outputFile && inputFile ? (
               <Comparison className="w-full h-full">
-                <ComparisonItem className="bg-red-500" position="left">
-                  <Image
-                    alt="Placeholder 1"
-                    className="opacity-50"
-                    height={1080}
-                    src="https://placehold.co/1920x1080?random=1"
-                    unoptimized
-                    width={1920}
-                  />
+                <ComparisonItem position="left">
+                  <ImageZoom className="w-full h-full">
+                    <Image
+                      alt="input image"
+                      src={inputFile.url}
+                      unoptimized
+                      fill
+                      style={{ objectFit: "cover" }}
+                    />
+                  </ImageZoom>
                 </ComparisonItem>
-                <ComparisonItem className="bg-blue-500" position="right">
-                  <Image
-                    alt="Placeholder 2"
-                    className="opacity-50"
-                    height={1440}
-                    src="https://placehold.co/2560x1440?random=2"
-                    unoptimized
-                    width={2560}
-                  />
+                <ComparisonItem position="right">
+                  <ImageZoom className="w-full h-full">
+                    <Image
+                      alt="output image"
+                      src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${outputFile.path}`}
+                      unoptimized
+                      fill
+                      style={{ objectFit: "cover" }}
+                    />
+                  </ImageZoom>
                 </ComparisonItem>
                 <ComparisonHandle />
               </Comparison>
             ) : (
-              <Image
-                src={OutputFingerprintImage}
-                alt=""
-                className="absolute inline-block opacity-20 left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
-              />
+              <div className="pointer-events-none grid place-items-center">
+                {isPending ? (
+                  <Image
+                    src={FingerprintAnimation}
+                    alt=""
+                    className="absolute top-1/5 left 1/2
+                    animate-in fade-in duration-700"
+                  />
+                ) : (
+                  <>
+                    <Image
+                      src={OutputFingerprintImage}
+                      alt=""
+                      className="absolute inline-block opacity-20 left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
+                    />
+                    <p className="text-[#4E4E4E] absolute bottom-4 left-1/2 -translate-x-1/2 text-nowrap">
+                      Matched image will popup there
+                    </p>
+                  </>
+                )}
+              </div>
             )}
-            <p className="text-[#4E4E4E] absolute bottom-4 left-1/2 -translate-x-1/2 text-nowrap">
-              Matched image will popup there
-            </p>
           </InputOutputCard>
 
           <div className="mt-4 flex justify-between gap-8">
             <div className="w-full space-y-2">
-              <Button className="text-primary w-full">
+              <Button
+                className="text-primary w-full"
+                onClick={handleSubmit}
+                disabled={!!outputFile || !inputFile || isPending}
+              >
                 <Ruler className="inline" /> enhance
               </Button>
               <PipelineSelect
@@ -103,7 +186,7 @@ export default function UtilsPipeline({
                 value={enhancer}
               />
             </div>
-            <p>00:32</p>
+            <p>{displayDuration(duration)}</p>
           </div>
         </div>
       </div>

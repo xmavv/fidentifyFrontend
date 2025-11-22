@@ -43,11 +43,11 @@ export const navLinks: INavLink[] = [
     name: "utils",
     href: "/application/utils",
     childLinks: [
-      { name: "ORIENTATION", href: "/ORIENTATION" },
-      { name: "GABOR", href: "/GABOR" },
-      { name: "SKELETONIZE", href: "/SKELETONIZE" },
-      { name: "MINUTIAE", href: "/MINUTIAE" },
-      { name: "SINGULARITY", href: "/SINGULARITY" },
+      { name: "ORIENTATION", href: "/orientation" },
+      { name: "GABOR", href: "/gabor" },
+      { name: "SKELETONIZE", href: "/skeletonize" },
+      { name: "MINUTIAE", href: "/minutiae" },
+      { name: "SINGULARITY", href: "/singularity" },
     ],
   },
   {

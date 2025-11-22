@@ -47,7 +47,7 @@ export default function BentoGrid() {
       <div className="flex items-center gap-5">
         <CardBento
           imageName="utilities"
-          href="/application/utilities/minutiae"
+          href="/application/utils/minutiae"
           title="Utilities."
           description="Different methods for fingerprint enhancment."
           variant="small"

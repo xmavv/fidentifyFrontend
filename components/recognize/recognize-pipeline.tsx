@@ -7,12 +7,11 @@ import {
   DropzoneContent,
   DropzoneEmptyState,
 } from "@/components/ui/shadcn-io/dropzone";
-import { ArrowRightLg } from "react-coolicons";
 import Image from "next/image";
 import Button from "@/ui/button";
 import FingerprintAnimation from "@/public/fingerprint_animation.gif";
 import OutputFingerprintImage from "@/public/fingerprint_output.png";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { recognize } from "@/services/actions";
 import {
   Carousel,
@@ -24,29 +23,19 @@ import {
 import { ImageZoom } from "@/components/ui/shadcn-io/image-zoom";
 import { convertTiff } from "@/services/utils";
 import { displayDuration } from "@/lib/utils";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/shadcn/alert-dialog";
-import Card from "@/ui/card";
+import Alert from "@/ui/alert";
+import IndicatorArrow from "@/components/pipeline/indicator-arrow";
+import PipelineInput, { InputFile } from "@/components/pipeline/pipeline-input";
 const recognizeDescription =
   "Siamese AI model for fingerprint matching. The Siamese model is trained in a way that the dot product of two such vectors will return the similarity of the corresponding fingerprints. The trained model managed to match 8188 test fingerprints (never been seen while training) to 1000 unique test fingerprints with roughly 98% accuracy.";
 
 export default function RecognizePipeline() {
   const [isPending, startTransition] = useTransition();
-  const [inputFile, setInputFile] = useState<{ file: File; url: string }>();
-  //TODO: MOVE THIS INTERFACE TO ITS OWN TYPE TO USE IT IN THE ACTION ALSO
+  const [inputFile, setInputFile] = useState<InputFile>();
   const [outputFiles, setOutputFiles] = useState<
     { match: number; name: string }[]
   >([]);
-  const [error, setError] = useState("HALO DZIALA TO");
+  const [error, setError] = useState("");
 
   //TEN TIMER TO NA PEWNO DO INNEGO COMPONENTU BO ON POWODUJE ZE CALY TEN COMPOENNT SIE RE-RENDERUJE CALY CZAS
   //WIEC ALBO TO, ALBO ROBIMY TUTAJ MEMO
@@ -54,10 +43,6 @@ export default function RecognizePipeline() {
   //FAJNY BYL BY TU REDUCER...
   //DUZO STATEOW KTORE OD SIEBIE ZALEZA
   //POROBIC MNIEJSZE COMPONENTY BO TO JUZ ZA DUZO TUTAJ
-  //w sumie mozna uzyc tutaj tego patterny compound compoentn
-  //no bo np ten arrow to pasuje tylko jakby do tego pipelinu
-  //i mozna w ogole wtedy context zrobic na gorze i te componenty beda sie ladnie renderowac
-  //na bazie tego co jest w contexcie
   const [duration, setDuration] = useState(0);
 
   async function handleDrop(files: File[]) {
@@ -75,33 +60,6 @@ export default function RecognizePipeline() {
 
   async function handleSubmit() {
     if (!inputFile || !inputFile.file) return;
-
-    // startTransition(async () => {
-    //   async function mock() {
-    //     return new Promise((res, rej) => {
-    //       setTimeout(() => {
-    //         res("");
-    //       }, 7000);
-    //     });
-    //   }
-    //
-    //   const matchedFingerprints = await mock();
-    //
-    //   setOutputFiles([
-    //     {
-    //       match: 0.9770797491073608,
-    //       name: "static\\fingerprints\\19f13c39-4b1e-489d-9fa9-adf2b06c93c4_571__F_Left_ring_finger.BMP",
-    //     },
-    //     {
-    //       match: 0.9753514528274536,
-    //       name: "static\\fingerprints\\9499bf02-5800-4d0e-bb05-d908acb44e80_571__F_Left_thumb_finger.BMP",
-    //     },
-    //     {
-    //       match: 0.9746785759925842,
-    //       name: "static\\fingerprints\\db3cc7ec-9b50-4caa-92da-08c05328173b_406__M_Left_index_finger.BMP",
-    //     },
-    //   ]);
-    // });
 
     const interval = setInterval(() => {
       setDuration((duration) => duration + 1);
@@ -128,78 +86,39 @@ export default function RecognizePipeline() {
 
   return (
     <>
-      <AlertDialog open={!!error}>
-        <AlertDialogContent
-          style={{
-            border: "none",
-            padding: 0,
-          }}
-        >
-          <Card>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{error}</AlertDialogTitle>
-              <AlertDialogDescription className="text-accent">
-                <span className="block">
-                  An error occurred and pipeline did not run properly.
-                </span>
-                <span>
-                  Please read error information and try again with different
-                  image.{" "}
-                </span>
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <Button
-                className="text-instruction py-2 px-8"
-                onClick={() => setError("")}
-              >
-                Continue
-              </Button>
-            </AlertDialogFooter>
-          </Card>
-        </AlertDialogContent>
-      </AlertDialog>
+      <Alert open={!!error}>
+        <Alert.Header>
+          <Alert.Title>{error}</Alert.Title>
+          <Alert.Description>
+            <span className="block">
+              An error occurred and pipeline did not run properly.
+            </span>
+            <span>
+              Please read error information and try again with different
+              image.{" "}
+            </span>
+          </Alert.Description>
+        </Alert.Header>
+        <Alert.Action>
+          <Button
+            className="text-instruction py-2 px-8"
+            onClick={() => setError("")}
+          >
+            Continue
+          </Button>
+        </Alert.Action>
+      </Alert>
 
       <div className="flex justify-evenly">
-        <InputOutputCard className="box-border p-1">
-          {inputFile?.url ? (
-            <div
-              className="group relative w-full h-full animate-in fade-in duration-500"
-              onClick={resetInputFile}
-            >
-              <Image
-                src={inputFile.url}
-                alt="input fingerprint"
-                fill
-                style={{ objectFit: "cover" }}
-              />
-              <div className="pointer-events-none absolute transition-opacity opacity-0 group-hover:opacity-80 inset-0 bg-black grid place-items-center">
-                <span>Click to reset input image</span>
-              </div>
-            </div>
-          ) : (
-            <DropzoneShadcn
-              accept={{
-                "image/jpeg": [".jpg", ".jpeg"],
-                "image/png": [".png"],
-                "image/tiff": [".tiff", ".tif"],
-                "image/bmp": [".bmp"],
-              }}
-              maxFiles={1}
-              onDrop={handleDrop}
-              onError={console.error}
-              className="h-full rounded-none border-none"
-            >
-              <DropzoneEmptyState />
-              <DropzoneContent />
-            </DropzoneShadcn>
-          )}
-        </InputOutputCard>
+        <PipelineInput
+          inputFile={inputFile}
+          onReset={resetInputFile}
+          onDrop={handleDrop}
+        />
 
-        <ArrowRightLg
-          className={`text-accent self-center -translate-y-8 drop-shadow-none
-        ${outputFiles.length > 0 || isPending ? `drop-shadow-[-4px_0_5px_var(--primary)] text-primary ${!isPending ? "" : "animate-left-right"}` : ""}
-        transition-all duration-2000`}
+        <IndicatorArrow
+          isLoading={isPending}
+          finished={outputFiles.length > 0}
         />
 
         <div>

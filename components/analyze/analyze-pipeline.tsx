@@ -12,7 +12,9 @@ import Image from "next/image";
 import Button from "@/ui/button";
 import PipelineSelect from "@/components/pipeline/pipeline-select";
 import { analyzeDescriptions } from "@/constants/analyze";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { convertTiff } from "@/services/utils";
+import { recognize } from "@/services/actions";
 
 const feature = { name: "analyze", items: ["flann"] };
 
@@ -21,12 +23,52 @@ export default function AnalyzePipeline({
 }: {
   method: keyof typeof analyzeDescriptions;
 }) {
-  const [files, setFiles] = useState<File[] | undefined>();
+  const [isPending, startTransition] = useTransition();
+  const [inputFile, setInputFile] = useState<{ file: File; url: string }>();
+  const [outputFiles, setOutputFiles] = useState<
+    { match: number; name: string }[]
+  >([]);
+  const [error, setError] = useState("");
+  const [duration, setDuration] = useState(0);
 
-  const handleDrop = (inputFiles: File[]) => {
-    console.log(inputFiles);
-    setFiles(inputFiles);
-  };
+  async function handleDrop(files: File[]) {
+    if (!files) return;
+
+    const file = files[0];
+    const name = file.name.toLowerCase() || "";
+    const isTiff = name.endsWith(".tif") || name.endsWith(".tiff");
+    let imageUrl: string;
+    if (isTiff) imageUrl = await convertTiff(file);
+    else imageUrl = URL.createObjectURL(file);
+
+    setInputFile({ file, url: imageUrl });
+  }
+
+  async function handleSubmit() {
+    if (!inputFile || !inputFile.file) return;
+
+    const interval = setInterval(() => {
+      setDuration((duration) => duration + 1);
+    }, 1000);
+
+    startTransition(async () => {
+      const matchedFingerprints = await recognize(inputFile?.file);
+      if (matchedFingerprints.detail) {
+        setError(matchedFingerprints.detail);
+        clearInterval(interval);
+        return;
+      }
+
+      setOutputFiles(matchedFingerprints);
+      clearInterval(interval);
+    });
+  }
+
+  function resetInputFile() {
+    setInputFile(undefined);
+    setOutputFiles([]);
+    setDuration(0);
+  }
 
   return (
     <>
