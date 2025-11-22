@@ -15,15 +15,17 @@ interface PipelineInputProps {
   inputFile: InputFile | undefined;
   onReset: () => void;
   onDrop: (files: File[]) => void;
+  className?: string;
 }
 
 export default function PipelineInput({
   inputFile,
   onReset,
   onDrop,
+  className = "",
 }: PipelineInputProps) {
   return (
-    <InputOutputCard className="box-border p-1">
+    <InputOutputCard className={`box-border p-1 ${className}`}>
       {inputFile?.url ? (
         <div
           className="group relative w-full h-full animate-in fade-in duration-500"
