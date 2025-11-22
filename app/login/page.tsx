@@ -4,8 +4,10 @@ import Image from "next/image";
 import Logo from "@/ui/logo";
 import Input from "@/ui/input";
 import { ButtonCTA } from "@/ui/button";
+import { login } from "@/services/auth";
+import { redirect } from "next/navigation";
 
-export default function Page() {
+export default async function Page() {
   return (
     <div className="grid grid-cols-[1fr_20vw] h-screen bg-black">
       <div className="relative">
@@ -26,10 +28,10 @@ export default function Page() {
         <div className="text-center space-y-8">
           <Logo />
           {/*TODO: move this form to its own component*/}
-          <form action="SEEVER ACTION" className="w-7/10 mx-auto space-y-18">
+          <form action={login} className="w-7/10 mx-auto space-y-18">
             <div className="space-y-6">
-              <Input label="id" className="w-67" />
-              <Input label="password" className="w-67" />
+              <Input name="username" label="id" className="w-67" />
+              <Input name="password" label="password" className="w-67" />
             </div>
             <div className="space-y-4">
               <ButtonCTA className="w-full">

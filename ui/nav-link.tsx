@@ -1,4 +1,4 @@
-"use client";
+"use client"; //for checking if currently choosen link is the one and highlight it
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";

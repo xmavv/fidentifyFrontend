@@ -3,7 +3,7 @@ import Image from "next/image";
 import MockHistoryImage from "@/public/mock_flann.png";
 import GlowText from "@/ui/glow-text";
 import { ButtonSmall } from "@/ui/button";
-import { Download, Expand, Info, RemoveMinus } from "react-coolicons";
+import { Download } from "react-coolicons";
 import {
   Carousel,
   CarouselContent,

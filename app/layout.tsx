@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import "./fidentify_globals.css";
-import NavBar from "@/components/navbar/navbar";
 
 const inter = Inter({
   subsets: ["latin"],

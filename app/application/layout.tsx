@@ -1,7 +1,10 @@
 import NavBar from "@/components/navbar/navbar";
 import { ReactNode } from "react";
+import { AuthProvider } from "@/contexts/auth";
+import { getUser } from "@/services/auth";
+import { redirect } from "next/navigation";
 
-export default function Layout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: ReactNode;
@@ -14,8 +17,10 @@ export default function Layout({
 
       {/*w ogole mozna brac chyba paramsy od razu w layoucie i zostawic to jako*/}
       {/*server component*/}
-      <div className="px-50 overflow-auto overflow-x-hidden">{children}</div>
-      <NavBar />
+      <AuthProvider>
+        <div className="px-50 overflow-auto overflow-x-hidden">{children}</div>
+        <NavBar />
+      </AuthProvider>
     </main>
   );
 }

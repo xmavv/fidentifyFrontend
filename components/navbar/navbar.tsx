@@ -3,6 +3,7 @@ import Button from "@/ui/button";
 import Image from "next/image";
 import HeaderNav from "@/components/navbar/header-nav";
 import { navLinks } from "@/types/navbar";
+import { logout } from "@/services/auth";
 
 export default function NavBar() {
   return (
@@ -27,7 +28,7 @@ export default function NavBar() {
           ))}
         </ul>
 
-        <Button className="text-warn mt-20 w-full">
+        <Button className="text-warn mt-20 w-full" onClick={logout}>
           <Image
             src="/logo_small_warn.png"
             alt=""

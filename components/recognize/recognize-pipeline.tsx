@@ -139,11 +139,13 @@ export default function RecognizePipeline() {
             <AlertDialogHeader>
               <AlertDialogTitle>{error}</AlertDialogTitle>
               <AlertDialogDescription className="text-accent">
-                <p>An error occurred and pipeline did not run properly.</p>
-                <p>
+                <span className="block">
+                  An error occurred and pipeline did not run properly.
+                </span>
+                <span>
                   Please read error information and try again with different
                   image.{" "}
-                </p>
+                </span>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
