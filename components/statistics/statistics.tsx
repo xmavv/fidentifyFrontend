@@ -1,13 +1,20 @@
-interface SettingProps {
-  label: string;
-  value: string | number;
-}
+import Statistic from "@/components/statistics/statistic";
 
-export default function Statistics({ label, value }: SettingProps) {
+export default function Statistics() {
   return (
-    <div className="flex justify-between border-t border-white py-4">
-      <span className="text-foreground">{label}</span>
-      <span className="text-foreground">{value}</span>
-    </div>
+    <ul>
+      <li>
+        <Statistic label="OS" value={"xd"} />
+      </li>
+      <li>
+        <Statistic label="Browser" value={"xd"} />
+      </li>
+      <li>
+        <Statistic label="IP" value={"xd"} />
+      </li>
+      <li>
+        <Statistic label="Localization" value={"xd"} />
+      </li>
+    </ul>
   );
 }
