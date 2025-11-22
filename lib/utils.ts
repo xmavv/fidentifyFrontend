@@ -13,3 +13,9 @@ export function displayDuration(duration: number) {
 
   return `${stringMins}:${stringSecs}`;
 }
+
+export function display3DigitsId(id: number) {
+  if (id < 10) return `#00${id}`;
+  if (id < 100) return `#0${id}`;
+  return `#${id}`;
+}

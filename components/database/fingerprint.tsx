@@ -5,25 +5,36 @@ import { ButtonSmall } from "@/ui/button";
 import { Expand, Info, RemoveMinus } from "react-coolicons";
 import GlowText from "@/ui/glow-text";
 import { ImageZoom } from "@/components/ui/shadcn-io/image-zoom";
+import { Fingerprint as IFinerprint } from "@/types/fingerprint";
+import { display3DigitsId } from "@/lib/utils";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/shadcn/tooltip";
 
-export default function Fingerprint() {
+export default function Fingerprint({
+  fingerprint,
+}: {
+  fingerprint: IFinerprint;
+}) {
   return (
     <Card>
       <div className="flex gap-2">
         <div className="flex flex-col justify-between">
           <h5>
-            <GlowText>#000</GlowText>
+            <GlowText>{display3DigitsId(fingerprint.id)}</GlowText>
           </h5>
           <div className="space-y-1">
-            <ButtonSmall className="block text-warn">
-              <RemoveMinus className="inline w-5" />
-            </ButtonSmall>
-            <ButtonSmall className="block">
-              <Info className="inline w-5" />
-            </ButtonSmall>
-            {/*<ButtonSmall className="block">*/}
-            {/*  <Expand className="inline w-5" />*/}
+            {/*<ButtonSmall className="block text-warn">*/}
+            {/*  <RemoveMinus className="inline w-5" />*/}
             {/*</ButtonSmall>*/}
+            <Tooltip>
+              <TooltipTrigger>
+                <ButtonSmall className="block" as="div">
+                  <Info className="inline w-5" />
+                </ButtonSmall>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{fingerprint.created_at.split("T").join(" ")}</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
         <ImageZoom>
