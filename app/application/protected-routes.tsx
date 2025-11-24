@@ -7,17 +7,24 @@ import { getUser } from "@/services/auth";
 import { UAParser } from "ua-parser-js";
 
 export default function ProtectedRoutes({ children }: { children: ReactNode }) {
-  const { setUser } = useAuth();
+  const { setUser, setIsLoadingUserInfo } = useAuth();
 
   useEffect(() => {
     async function fetchUserInfo() {
-      const { uuid } = await getUser();
+      setIsLoadingUserInfo(true);
+
+      const userResponse = getUser();
+      const ipResponse = fetch("https://api.ipify.org?format=json").then(
+        (response) => response.json(),
+      );
+      const responses = await Promise.all([userResponse, ipResponse]);
+
+      const [{ uuid }, { ip }] = responses;
       if (!uuid) return;
 
-      const res = await fetch("https://api.ipify.org?format=json");
-      const { ip } = await res.json();
-      const response = await fetch(`https://ipapi.co/${ip}/json/`);
-      const { city, country_name, latitude, longitude } = await response.json();
+      const userInforesponse = await fetch(`https://ipapi.co/${ip}/json/`);
+      const { city, country_name, latitude, longitude } =
+        await userInforesponse.json();
       const localization = `${country_name}, ${city}`;
 
       const parser = new UAParser(navigator.userAgent);
@@ -37,10 +44,11 @@ export default function ProtectedRoutes({ children }: { children: ReactNode }) {
         long: longitude,
       };
       setUser(userInfo);
+      setIsLoadingUserInfo(false);
     }
 
     fetchUserInfo();
-  }, [setUser]);
+  }, [setUser, setIsLoadingUserInfo]);
 
   return children;
 }

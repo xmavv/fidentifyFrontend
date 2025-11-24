@@ -32,19 +32,24 @@ export default function Fingerprint({
                 </ButtonSmall>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{fingerprint.created_at.split("T").join(" ")}</p>
+                <p>
+                  {fingerprint.created_at.split("T").join(" ").split(".")[0]}
+                </p>
               </TooltipContent>
             </Tooltip>
           </div>
         </div>
-        <ImageZoom>
-          <Image
-            src={MockFingerprint}
-            alt="fingerprint"
-            height={700}
-            width={500}
-            className="rounded-2xl w-30 h-auto"
-          />
+        <ImageZoom className="w-30 h-15">
+          <div className="w-30 h-150">
+            <Image
+              src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/images/${fingerprint.photo_uri.slice(2)}`}
+              alt="fingerprint"
+              width={150}
+              height={700}
+              unoptimized
+              className="rounded-2xl"
+            />
+          </div>
         </ImageZoom>
       </div>
     </Card>

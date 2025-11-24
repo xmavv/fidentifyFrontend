@@ -31,7 +31,7 @@ export default function History({ history }: { history: IHistory }) {
                 >
                   <ImageZoom className="text-center w-50 h-50 mx-auto">
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${photo.photo_path}`}
+                      src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/images/${photo.photo_path}`}
                       alt="history entry"
                       className="rounded-2xl inline-block"
                       unoptimized
@@ -63,7 +63,9 @@ export default function History({ history }: { history: IHistory }) {
               <h4 className="text-4xl">
                 <GlowText>{historyInfo.uuid.slice(0, 10)}</GlowText>
               </h4>
-              <p className="font-medium text-primary-2 text-start">TO CHANGE</p>
+              <p className="font-medium text-primary-2 text-start capitalize">
+                {historyInfo.method}
+              </p>
             </div>
             <div>
               {historyInfo?.success_percent && (
@@ -91,8 +93,8 @@ export default function History({ history }: { history: IHistory }) {
                 <p className="text-accent">{historyInfo.ip}</p>
               </div>
               <div className="border-l border-[#333333] pl-3">
-                <p className="mb-2">{historyInfo.size}</p>
-                <p>{historyInfo.duration}</p>
+                <p className="mb-2">{historyInfo.size} KB</p>
+                <p>{historyInfo.duration} s</p>
               </div>
             </div>
             <div className="flex flex-col flex-wrap gap-3">

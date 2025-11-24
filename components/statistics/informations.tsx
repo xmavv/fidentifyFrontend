@@ -4,8 +4,10 @@ import Statistic from "@/components/statistics/statistic";
 import { useAuth } from "@/contexts/auth";
 
 export default function Informations() {
-  const { user } = useAuth();
+  const { user, isLoadingUserInfo } = useAuth();
   const { os, browser, ip, localization, lat, long } = user;
+
+  if (isLoadingUserInfo) return <div>FETCHING USER INFORMATION...</div>;
 
   return (
     <ul>

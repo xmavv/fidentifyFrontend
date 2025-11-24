@@ -3,20 +3,23 @@
 import { authRequest } from "@/services/auth";
 import { utilsDescriptions } from "@/constants/utilities";
 import { analyzeDescriptions } from "@/constants/analyze";
+import { User } from "@/contexts/auth";
 
-export async function recognize(file: File) {
-  const formData = new FormData();
-  //this should come from user object and loop over it and add fields
-  //it can be done in outside function
-  formData.append("fingerprint", file);
+function setFormDataWithUserInfo(userInfo: User, formData: FormData) {
   formData.append("uuid", ""); //this will be replaced by backend anyway
-  formData.append("location", "");
-  formData.append("geolocation_lat", "3.321321");
-  formData.append("geolocation_long", "4.4214213");
-  formData.append("duration", "321"); //this will be replaced by backend anyway
-  formData.append("os", "");
-  formData.append("ip", "");
-  formData.append("browser", "");
+  formData.append("location", userInfo.localization);
+  formData.append("geolocation_lat", String(userInfo.lat));
+  formData.append("geolocation_long", String(userInfo.long));
+  formData.append("duration", "50"); //this will be replaced by backend anyway
+  formData.append("os", userInfo.os);
+  formData.append("ip", userInfo.ip);
+  formData.append("browser", userInfo.browser);
+}
+
+export async function recognize(file: File, userInfo: User) {
+  const formData = new FormData();
+  formData.append("fingerprint", file);
+  setFormDataWithUserInfo(userInfo, formData);
 
   const recognized = await authRequest("fingerprints/match", "POST", formData);
 
@@ -26,17 +29,11 @@ export async function recognize(file: File) {
 export async function enhance(
   file: File,
   method: keyof typeof utilsDescriptions,
+  userInfo: User,
 ) {
   const formData = new FormData();
   formData.append("fingerprint", file);
-  formData.append("uuid", ""); //this will be replaced by backend anyway
-  formData.append("location", "");
-  formData.append("geolocation_lat", "3.321321");
-  formData.append("geolocation_long", "4.4214213");
-  formData.append("duration", "321"); //this will be replaced by backend anyway
-  formData.append("os", "");
-  formData.append("ip", "");
-  formData.append("browser", "");
+  setFormDataWithUserInfo(userInfo, formData);
 
   const enhanced = await authRequest(
     `fingerprints/enhancement/${method}`,
@@ -51,18 +48,12 @@ export async function analyze(
   file1: File,
   file2: File,
   method: keyof typeof analyzeDescriptions,
+  userInfo: User,
 ) {
   const formData = new FormData();
   formData.append("fingerprint_1", file1);
   formData.append("fingerprint_2", file2);
-  formData.append("uuid", ""); //this will be replaced by backend anyway
-  formData.append("location", "");
-  formData.append("geolocation_lat", "3.321321");
-  formData.append("geolocation_long", "4.4214213");
-  formData.append("duration", "321"); //this will be replaced by backend anyway
-  formData.append("os", "");
-  formData.append("ip", "");
-  formData.append("browser", "");
+  setFormDataWithUserInfo(userInfo, formData);
 
   const analyzed = await authRequest(
     `fingerprints/${method}`,

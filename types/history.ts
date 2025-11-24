@@ -12,6 +12,7 @@ export interface History {
     user_id: number;
     size: number;
     success_percent?: number;
+    method: string;
     created_at: string;
   };
   photos: { photo_path: string; id: number; history_id: number }[];

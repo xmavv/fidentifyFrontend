@@ -34,7 +34,6 @@ export async function proxy(req: NextRequest) {
   }
 
   if (!pathname.startsWith("/login")) {
-    console.log("elo");
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }

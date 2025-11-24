@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 
-interface User {
+export interface User {
   uuid: string;
   os: string;
   browser: string;
@@ -19,7 +19,7 @@ interface User {
   long: number;
 }
 
-const defaultUser = {
+const defaultUser: User = {
   uuid: "23578971234589",
   os: "Windows 11 Pro",
   browser: "Chrome 55.2",
@@ -32,15 +32,20 @@ const defaultUser = {
 interface AuthContext {
   user: User;
   setUser: Dispatch<SetStateAction<User>>;
+  isLoadingUserInfo: boolean;
+  setIsLoadingUserInfo: Dispatch<SetStateAction<boolean>>;
 }
 
 const AuthContext = createContext<AuthContext | null>(null);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User>(defaultUser);
+  const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(false);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider
+      value={{ user, setUser, isLoadingUserInfo, setIsLoadingUserInfo }}
+    >
       {children}
     </AuthContext.Provider>
   );

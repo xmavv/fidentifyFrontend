@@ -26,10 +26,12 @@ import { displayDuration } from "@/lib/utils";
 import Alert from "@/ui/alert";
 import IndicatorArrow from "@/components/pipeline/indicator-arrow";
 import PipelineInput, { InputFile } from "@/components/pipeline/pipeline-input";
+import { useAuth } from "@/contexts/auth";
 const recognizeDescription =
   "Siamese AI model for fingerprint matching. The Siamese model is trained in a way that the dot product of two such vectors will return the similarity of the corresponding fingerprints. The trained model managed to match 8188 test fingerprints (never been seen while training) to 1000 unique test fingerprints with roughly 98% accuracy.";
 
 export default function RecognizePipeline() {
+  const { user, isLoadingUserInfo } = useAuth();
   const [isPending, startTransition] = useTransition();
   const [inputFile, setInputFile] = useState<InputFile>();
   const [outputFiles, setOutputFiles] = useState<
@@ -66,9 +68,12 @@ export default function RecognizePipeline() {
     }, 1000);
 
     startTransition(async () => {
-      const matchedFingerprints = await recognize(inputFile?.file);
+      const matchedFingerprints = await recognize(inputFile?.file, user);
       if (matchedFingerprints.detail) {
-        setError(matchedFingerprints.detail);
+        if (Array.isArray(matchedFingerprints.detail))
+          setError(matchedFingerprints.detail[0].msg);
+        else setError(matchedFingerprints.detail);
+
         clearInterval(interval);
         return;
       }
@@ -191,7 +196,12 @@ export default function RecognizePipeline() {
               <Button
                 className="text-primary w-full"
                 onClick={handleSubmit}
-                disabled={outputFiles.length > 0 || !inputFile || isPending}
+                disabled={
+                  outputFiles.length > 0 ||
+                  !inputFile ||
+                  isPending ||
+                  isLoadingUserInfo
+                }
               >
                 <IconRecognize className="inline" /> recognize
               </Button>

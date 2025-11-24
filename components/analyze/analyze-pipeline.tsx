@@ -16,6 +16,7 @@ import PipelineInput from "@/components/pipeline/pipeline-input";
 import { ImageZoom } from "@/components/ui/shadcn-io/image-zoom";
 import FingerprintAnimation from "@/public/fingerprint_animation.gif";
 import Alert from "@/ui/alert";
+import { useAuth } from "@/contexts/auth";
 
 const feature = { name: "analyze", items: ["flann"] };
 
@@ -24,6 +25,7 @@ export default function AnalyzePipeline({
 }: {
   method: keyof typeof analyzeDescriptions;
 }) {
+  const { user, isLoadingUserInfo } = useAuth();
   const [isPending, startTransition] = useTransition();
   const [inputFiles, setInputFiles] = useState<{ file: File; url: string }[]>(
     [],
@@ -63,9 +65,13 @@ export default function AnalyzePipeline({
         inputFiles[0].file,
         inputFiles[1].file,
         method,
+        user,
       );
       if (analyzedFingerprints.detail) {
-        setError(analyzedFingerprints.detail);
+        if (Array.isArray(analyzedFingerprints.detail))
+          setError(analyzedFingerprints.detail[0].msg);
+        else setError(analyzedFingerprints.detail);
+
         clearInterval(interval);
         return;
       }
@@ -169,7 +175,8 @@ export default function AnalyzePipeline({
                 disabled={
                   !!outputFile ||
                   inputFiles.filter((file) => file).length < 2 ||
-                  isPending
+                  isPending ||
+                  isLoadingUserInfo
                 }
               >
                 <NoteSearch className="inline" /> analyze

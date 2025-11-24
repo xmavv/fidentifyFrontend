@@ -21,6 +21,7 @@ import FingerprintAnimation from "@/public/fingerprint_animation.gif";
 import { displayDuration } from "@/lib/utils";
 import Alert from "@/ui/alert";
 import { ImageZoom } from "@/components/ui/shadcn-io/image-zoom";
+import { useAuth } from "@/contexts/auth";
 
 const feature = {
   name: "utils",
@@ -37,6 +38,7 @@ export default function UtilsPipeline({
   //for even more convenience
 
   //reusable component with children but animation and placehodler statys the same
+  const { user, isLoadingUserInfo } = useAuth();
   const [isPending, startTransition] = useTransition();
   const [inputFile, setInputFile] = useState<{ file: File; url: string }>();
   const [outputFile, setOutputFile] = useState<{ path: string }>();
@@ -64,9 +66,17 @@ export default function UtilsPipeline({
     }, 1000);
 
     startTransition(async () => {
-      const enhancedFingerprint = await enhance(inputFile?.file, enhancer);
+      const enhancedFingerprint = await enhance(
+        inputFile?.file,
+        enhancer,
+        user,
+      );
+
       if (enhancedFingerprint.detail) {
-        setError(enhancedFingerprint.detail);
+        if (Array.isArray(enhancedFingerprint.detail))
+          setError(enhancedFingerprint.detail[0].msg);
+        else setError(enhancedFingerprint.detail);
+
         clearInterval(interval);
         return;
       }
@@ -75,8 +85,6 @@ export default function UtilsPipeline({
       clearInterval(interval);
     });
   }
-
-  console.log(outputFile);
 
   function resetInputFile() {
     setInputFile(undefined);
@@ -176,7 +184,9 @@ export default function UtilsPipeline({
               <Button
                 className="text-primary w-full"
                 onClick={handleSubmit}
-                disabled={!!outputFile || !inputFile || isPending}
+                disabled={
+                  !!outputFile || !inputFile || isPending || isLoadingUserInfo
+                }
               >
                 <Ruler className="inline" /> enhance
               </Button>
