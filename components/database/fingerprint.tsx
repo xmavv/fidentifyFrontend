@@ -35,6 +35,7 @@ export default function Fingerprint({
                 <p>
                   {fingerprint.created_at.split("T").join(" ").split(".")[0]}
                 </p>
+                <p>{fingerprint.photo_uri.split("/").pop()}</p>
               </TooltipContent>
             </Tooltip>
           </div>

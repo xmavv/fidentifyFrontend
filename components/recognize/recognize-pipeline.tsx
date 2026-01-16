@@ -168,10 +168,14 @@ export default function RecognizePipeline() {
                           </div>
                           <div className="pointer-events-none absolute transition-opacity opacity-0 group-hover:opacity-80 inset-0 bg-black grid place-items-center">
                             <span className="absolute grid place-items-center text-5xl text-accent text-nowrap">
-                              {file.name.split("fingerprints")[1].slice(1, 12)}
+                              {/*{file.name.split("fingerprints")[1].slice(1, 12)}*/}
+                              {file.name.slice(file.name.length - 15)}
                             </span>
                             <span className="absolute grid place-items-center text-lg">
                               {renderGlowPercentMatch(file.match)}
+                            </span>
+                            <span className="absolute bottom-5 text-accent">
+                              {file.name.split("\\").pop()}
                             </span>
                           </div>
                         </div>

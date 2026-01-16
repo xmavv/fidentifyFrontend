@@ -30,8 +30,13 @@ export default async function Page() {
           {/*TODO: move this form to its own component*/}
           <form action={login} className="w-7/10 mx-auto space-y-18">
             <div className="space-y-6">
-              <Input name="username" label="id" className="w-67" />
-              <Input name="password" label="password" className="w-67" />
+              <Input type="text" name="username" label="id" className="w-67" />
+              <Input
+                type="password"
+                name="password"
+                label="password"
+                className="w-67"
+              />
             </div>
             <div className="space-y-4">
               <ButtonCTA className="w-full">
