@@ -39,8 +39,8 @@ export default function Fingerprint({
             </Tooltip>
           </div>
         </div>
-        <ImageZoom className="w-30 h-15">
-          <div className="w-30 h-150">
+        <ImageZoom className="w-30 h-30">
+          <div className="w-30 h-30">
             <Image
               src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/images/${fingerprint.photo_uri.slice(2)}`}
               alt="fingerprint"

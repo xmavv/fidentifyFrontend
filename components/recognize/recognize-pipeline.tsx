@@ -27,8 +27,20 @@ import Alert from "@/ui/alert";
 import IndicatorArrow from "@/components/pipeline/indicator-arrow";
 import PipelineInput, { InputFile } from "@/components/pipeline/pipeline-input";
 import { useAuth } from "@/contexts/auth";
+import GlowText from "@/ui/glow-text";
 const recognizeDescription =
   "Siamese AI model for fingerprint matching. The Siamese model is trained in a way that the dot product of two such vectors will return the similarity of the corresponding fingerprints. The trained model managed to match 8188 test fingerprints (never been seen while training) to 1000 unique test fingerprints with roughly 98% accuracy.";
+
+function renderGlowPercentMatch(match: number) {
+  const fixedNumber = Number(match.toFixed(2)) * 100;
+
+  let colorClassName = "";
+  if (fixedNumber < 34) colorClassName = "text-warn";
+  else if (fixedNumber < 67) colorClassName = "text-instruction";
+  else colorClassName = "text-success";
+
+  return <GlowText className={colorClassName}>{fixedNumber}%</GlowText>;
+}
 
 export default function RecognizePipeline() {
   const { user, isLoadingUserInfo } = useAuth();
@@ -134,24 +146,34 @@ export default function RecognizePipeline() {
                   {outputFiles.map((file, i) => (
                     <CarouselItem key={file.name} className="h-full w-full">
                       <ImageZoom className="text-center w-full h-full">
-                        <div className="relative w-93 h-124">
-                          <Image
-                            src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/images/${file.name}`}
-                            alt={`output fingerprint image number ${i}`}
-                            className="inline-block"
-                            fill
-                            style={{
-                              objectFit: "fill",
-                            }}
-                            unoptimized
-                          />
-                          {/*<a*/}
-                          {/*  href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${file.name}`}*/}
-                          {/*  download*/}
-                          {/*  className="absolute bottom-8 left-2 text-red-500"*/}
-                          {/*>*/}
-                          {/*  POBIERZ*/}
-                          {/*</a>*/}
+                        <div className="relative group w-[110%] h-full">
+                          <div className="relative w-93 h-124">
+                            <Image
+                              src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/images/${file.name}`}
+                              alt={`output fingerprint image number ${i}`}
+                              className="inline-block"
+                              fill
+                              style={{
+                                objectFit: "fill",
+                              }}
+                              unoptimized
+                            />
+                            {/*<a*/}
+                            {/*  href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${file.name}`}*/}
+                            {/*  download*/}
+                            {/*  className="absolute bottom-8 left-2 text-red-500"*/}
+                            {/*>*/}
+                            {/*  POBIERZ*/}
+                            {/*</a>*/}
+                          </div>
+                          <div className="pointer-events-none absolute transition-opacity opacity-0 group-hover:opacity-80 inset-0 bg-black grid place-items-center">
+                            <span className="absolute grid place-items-center text-5xl text-accent text-nowrap">
+                              {file.name.split("fingerprints")[1].slice(1, 12)}
+                            </span>
+                            <span className="absolute grid place-items-center text-lg">
+                              {renderGlowPercentMatch(file.match)}
+                            </span>
+                          </div>
                         </div>
                       </ImageZoom>
                     </CarouselItem>

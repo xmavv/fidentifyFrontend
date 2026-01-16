@@ -114,18 +114,24 @@ export default function AnalyzePipeline({
 
       <div className="flex justify-evenly">
         <div className="flex gap-2">
-          <PipelineInput
-            inputFile={inputFiles[0]}
-            onReset={resetInputFile}
-            onDrop={(files) => handleDrop(files, 0)}
-            className="!w-60 !h-80"
-          />
-          <PipelineInput
-            inputFile={inputFiles[1]}
-            onReset={resetInputFile}
-            onDrop={(files) => handleDrop(files, 1)}
-            className="!w-60 !h-80"
-          />
+          <div>
+            <PipelineInput
+              inputFile={inputFiles[0]}
+              onReset={resetInputFile}
+              onDrop={(files) => handleDrop(files, 0)}
+              className="!w-60 !h-80"
+            />
+            <p className="text-accent">Evidence sample</p>
+          </div>
+          <div>
+            <PipelineInput
+              inputFile={inputFiles[1]}
+              onReset={resetInputFile}
+              onDrop={(files) => handleDrop(files, 1)}
+              className="!w-60 !h-80"
+            />
+            <p className="text-accent">Comparative sample</p>
+          </div>
         </div>
 
         <IndicatorArrow isLoading={isPending} finished={!!outputFile} />
