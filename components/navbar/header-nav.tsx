@@ -5,9 +5,20 @@ import Image from "next/image";
 import { TimerClose } from "react-coolicons";
 import LogoSmall from "@/public/logo_small.png";
 import { useAuth } from "@/contexts/auth";
+import { useEffect, useState } from "react";
+import { displayDuration } from "@/lib/utils";
 
 export default function HeaderNav() {
   const { user } = useAuth();
+  const [sessionTime, setSessionTime] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSessionTime((time) => time + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div>
@@ -24,10 +35,10 @@ export default function HeaderNav() {
           {user.uuid}
         </p>
         <div className="text-right">
-          <p>55:55</p>
+          <p>30:00</p>
           <p className="text-warn font-light">
             <TimerClose className="stroke-4 size-4 inline -translate-y-[2px]" />{" "}
-            00:00
+            {displayDuration(sessionTime)}
           </p>
         </div>
       </div>

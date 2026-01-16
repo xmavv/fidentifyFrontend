@@ -13,38 +13,43 @@ export default function ProtectedRoutes({ children }: { children: ReactNode }) {
     async function fetchUserInfo() {
       setIsLoadingUserInfo(true);
 
-      const userResponse = getUser();
-      const ipResponse = fetch("https://api.ipify.org?format=json").then(
-        (response) => response.json(),
-      );
-      const responses = await Promise.all([userResponse, ipResponse]);
+      try {
+        const userResponse = getUser();
+        const ipResponse = fetch("https://api.ipify.org?format=json").then(
+          (response) => response.json(),
+        );
+        const responses = await Promise.all([userResponse, ipResponse]);
 
-      const [{ uuid }, { ip }] = responses;
-      if (!uuid) return;
+        const [{ uuid }, { ip }] = responses;
+        if (!uuid) return;
 
-      const userInforesponse = await fetch(`https://ipapi.co/${ip}/json/`);
-      const { city, country_name, latitude, longitude } =
-        await userInforesponse.json();
-      const localization = `${country_name}, ${city}`;
+        const userInforesponse = await fetch(`https://ipapi.co/${ip}/json/`);
+        const { city, country_name, latitude, longitude } =
+          await userInforesponse.json();
+        const localization = `${country_name}, ${city}`;
 
-      const parser = new UAParser(navigator.userAgent);
-      const ua = parser.getResult();
-      const browser = ua?.browser?.name
-        ? `${ua.browser.name} ${ua.browser.major}`
-        : "";
-      const os = ua.os.name ? `${ua.os.name} ${ua.os.version}` : "";
+        const parser = new UAParser(navigator.userAgent);
+        const ua = parser.getResult();
+        const browser = ua?.browser?.name
+          ? `${ua.browser.name} ${ua.browser.major}`
+          : "";
+        const os = ua.os.name ? `${ua.os.name} ${ua.os.version}` : "";
 
-      const userInfo = {
-        uuid,
-        os,
-        browser,
-        ip,
-        localization,
-        lat: latitude,
-        long: longitude,
-      };
-      setUser(userInfo);
-      setIsLoadingUserInfo(false);
+        const userInfo = {
+          uuid,
+          os,
+          browser,
+          ip,
+          localization,
+          lat: latitude,
+          long: longitude,
+        };
+        setUser(userInfo);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoadingUserInfo(false);
+      }
     }
 
     fetchUserInfo();
